@@ -20,18 +20,15 @@ class App extends Component {
     .then(data => data.json())
     .then(deck => {
       this.setState({ deck }, () => {
-        console.log('setState()');
-        console.log(this.state);
         const deckID = this.state.deck.deck_id;
-        console.log(`deckID: ${deckID}`);
         const url = `https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=2`;
         fetch(url)
         .then(data => data.json())
-        .then(player => this.setState({ player }, () => console.log(this.state)))
-        .catch(err => console.log(err));
+        .then(player => this.setState({ player }))
+        .catch(err => console.log(`Deck API Fetch Error: ${err}`));
       });
     })
-    .catch(err => console.log(`Error: ${err}`));
+    .catch(err => console.log(`Shuffle API Fetch Error: ${err}`));
   }
   render() {
     return (
