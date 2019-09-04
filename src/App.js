@@ -9,22 +9,24 @@ class App extends Component {
       deck: null,
       dealer: null,
       player: null,
+      cards: null,
     };
   }
   componentDidMount() {
     this.getData();
   }
   getData() {
-    console.log('getDeck()')
     fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
     .then(data => data.json())
     .then(deck => {
       this.setState({ deck }, () => {
         const deckID = this.state.deck.deck_id;
-        const url = `https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=2`;
+        const url = `https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=312`;
         fetch(url)
         .then(data => data.json())
-        .then(player => this.setState({ player }))
+        .then(json => this.setState({ cards: json.cards }, () => {
+          console.log(this.state)
+        }))
         .catch(err => console.log(`Deck API Fetch Error: ${err}`));
       });
     })
