@@ -14,8 +14,10 @@ class App extends Component {
     };
   }
   componentDidMount() {
+    console.log('componentDidMount()');
     this.getData();
   }
+  // deals the cards for players and dealer
   dealCards(playerCards, dealerCards) {
     // DEBUG: Need to add check if (dealCard + playCards + dealerCards) is greater than or equal to 312, then need to reshuffle
     let dealCard = this.state.dealCard;
@@ -40,15 +42,18 @@ class App extends Component {
     });
   }
   getData() {
+    console.log('getData()');
     fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
     .then(data => data.json())
     .then(json => {
       this.setState({ deckID: json.deck_id }, () => {
-        const deckID = this.state.deckID;
+        const { deckID } = this.state;
+        console.log(`deckID: ${deckID}`);
         const url = `https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=312`;
         fetch(url)
         .then(data => data.json())
         .then(json => this.setState({ cards: json.cards }, () => {
+          console.log('getData() fetch cards')
           console.log(this.state);
           this.dealCards(2, 2); // deal two cards to play and two cards to dealer
         }))
@@ -58,9 +63,18 @@ class App extends Component {
     .catch(err => console.log(`Shuffle API Fetch Error: ${err}`));
   }
   render() {
+    const { cards, dealer, player } = this.state;
+    console.log('getData() render()');
+    console.log(cards, dealer, player);
+    if (!cards || dealer.length === 0 || player.length === 0) {
+      return (
+        <div>Loading ...</div>
+      );
+    }
     return (
       <div className="App">
-        <Hand />
+        <Hand cards={cards} hand={dealer} />
+        <Hand cards={cards} hand={player} />
       </div>
     );  
   }
