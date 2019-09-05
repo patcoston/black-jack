@@ -4,7 +4,7 @@ const RenderCards = (props) => {
     const { cards, hand } = props;
     console.log('RenderCards(props)');
     console.log(cards, hand);
-    return hand.map((card, index) => <img src={cards[card].image} alt={cards[card].code} /> );
+    return hand.map((card, index) => <img src={cards[card].image} alt={cards[card].code} key={cards[card].code} /> );
 }
 
 class Hand extends Component {

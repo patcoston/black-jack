@@ -73,8 +73,14 @@ class App extends Component {
     }
     return (
       <div className="App">
-        <Hand cards={cards} hand={dealer} />
-        <Hand cards={cards} hand={player} />
+        <section>
+          <h2>Dealer</h2>
+          <Hand cards={cards} hand={dealer} />
+        </section>
+        <section>
+          <h2>Player</h2>
+          <Hand cards={cards} hand={player} />
+        </section>
       </div>
     );  
   }
