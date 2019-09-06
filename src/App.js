@@ -1,19 +1,21 @@
 import React, {Component} from 'react';
 import Hand from './Hand';
+import Actions from './Actions';
 import Score from './Score';
 import './App.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      deckID: null, // the API deckID which is used to shuffle and obtain decks of cards
-      cards: null, // will be array of 312 cards which is 6 decks of 52 cards per deck
-      dealCard: 0, // next card to deal
-      dealer: [], // array of indexes into cards[] array for dealers cards
-      player: [], // array of indexes into cards[] array for players cards
-    };
   }
+  state = {
+    deckID: null, // the API deckID which is used to shuffle and obtain decks of cards
+    cards: null, // will be array of 312 cards which is 6 decks of 52 cards per deck
+    dealCard: 0, // next card to deal. It is an index in cards[] array
+    dealer: [], // array of indexes into cards[] array for dealers cards
+    player: [], // array of indexes into cards[] array for players cards
+    playerHit: this.playerHit.bind(this), // click method for player getting another card
+  };
   componentDidMount() {
     console.log('componentDidMount()');
     this.getData();
@@ -21,7 +23,7 @@ class App extends Component {
   // deals the cards for players and dealer
   dealCards(playerCards, dealerCards) {
     // DEBUG: Need to add check if (dealCard + playCards + dealerCards) is greater than or equal to 312, then need to reshuffle
-    let dealCard = this.state.dealCard;
+    let {dealCard} = this.state;
     let player = [...this.state.player]; // clone player array
     let dealer = [...this.state.dealer]; // clone dealer array
     // deal player cards
@@ -40,6 +42,15 @@ class App extends Component {
     }, () => {
       console.log('dealCards()');
       console.log(this.state);
+    });
+  }
+  playerHit() {
+    debugger;
+    let {player, dealCard} = this.state;
+    player.push(dealCard++); // push card on player[] array, then point to next dealCard: DEBUG: 311 is last card. Need logic to reshuffle before overflowing cards[] array. Check when Vegas reshuffles.
+    this.setState({
+      dealCard,
+      player,
     });
   }
   getData() {
@@ -61,8 +72,8 @@ class App extends Component {
     .catch(err => console.log(`Shuffle API Fetch Error: ${err}`));
   }
   render() {
-    const { cards, dealer, player } = this.state;
-    if (!cards || dealer.length === 0 || player.length === 0) {
+    const { cards, dealer, player, playerHit } = this.state;
+    if (!cards || !dealer.length || !player.length) {
       return (
         <div>Loading ...</div>
       );
@@ -76,6 +87,7 @@ class App extends Component {
         <section>
           <h2>Player <Score cards={cards} hand={player} /></h2>
           <Hand cards={cards} hand={player} />
+          <Actions hit={playerHit} />
         </section>
       </div>
     );  
