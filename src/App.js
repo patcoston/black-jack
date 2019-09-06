@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import Hand from './Hand';  
+import Hand from './Hand';
+import Score from './Score';
 import './App.css';
 
 class App extends Component {
@@ -48,13 +49,10 @@ class App extends Component {
     .then(json => {
       this.setState({ deckID: json.deck_id }, () => {
         const { deckID } = this.state;
-        console.log(`deckID: ${deckID}`);
         const url = `https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=312`;
         fetch(url)
         .then(data => data.json())
         .then(json => this.setState({ cards: json.cards }, () => {
-          console.log('getData() fetch cards')
-          console.log(this.state);
           this.dealCards(2, 2); // deal two cards to play and two cards to dealer
         }))
         .catch(err => console.log(`Deck API Fetch Error: ${err}`));
@@ -64,8 +62,6 @@ class App extends Component {
   }
   render() {
     const { cards, dealer, player } = this.state;
-    console.log('getData() render()');
-    console.log(cards, dealer, player);
     if (!cards || dealer.length === 0 || player.length === 0) {
       return (
         <div>Loading ...</div>
@@ -74,17 +70,17 @@ class App extends Component {
     return (
       <div className="App">
         <section>
-          <h2>Dealer</h2>
+          <h2>Dealer <Score cards={cards} hand={dealer} /></h2>
           <Hand cards={cards} hand={dealer} />
         </section>
         <section>
-          <h2>Player</h2>
+          <h2>Player <Score cards={cards} hand={player} /></h2>
           <Hand cards={cards} hand={player} />
         </section>
       </div>
     );  
   }
-  
+
 }
 
 export default App;
