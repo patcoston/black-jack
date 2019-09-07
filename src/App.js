@@ -21,6 +21,24 @@ class App extends Component {
   componentDidMount() {
     this.getData();
   }
+  getData() {
+    console.log('getData()');
+    fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
+    .then(data => data.json())
+    .then(json => {
+      this.setState({ deckID: json.deck_id }, () => {
+        const { deckID } = this.state;
+        const url = `https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=312`;
+        fetch(url)
+        .then(data => data.json())
+        .then(json => this.setState({ cards: json.cards }, () => {
+          this.dealCards(2, 2); // deal two cards to player and two cards to dealer
+        }))
+        .catch(err => console.log(`Deck API Fetch Error: ${err}`));
+      });
+    })
+    .catch(err => console.log(`Shuffle API Fetch Error: ${err}`));
+  }
   // deals the cards for players and dealer
   dealCards(playerCards, dealerCards) {
     // DEBUG: Need to add check if (dealCard + playCards + dealerCards) is greater than or equal to 312, then need to reshuffle
@@ -46,33 +64,6 @@ class App extends Component {
     });
     this.updateScore(0);
     this.updateScore(1);
-  }
-  getData() {
-    console.log('getData()');
-    fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
-    .then(data => data.json())
-    .then(json => {
-      this.setState({ deckID: json.deck_id }, () => {
-        const { deckID } = this.state;
-        const url = `https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=312`;
-        fetch(url)
-        .then(data => data.json())
-        .then(json => this.setState({ cards: json.cards }, () => {
-          this.dealCards(2, 2); // deal two cards to player and two cards to dealer
-        }))
-        .catch(err => console.log(`Deck API Fetch Error: ${err}`));
-      });
-    })
-    .catch(err => console.log(`Shuffle API Fetch Error: ${err}`));
-  }
-  playerHit() {
-    let {player, dealCard} = this.state;
-    player.push(dealCard++); // push card on player[] array, then point to next dealCard: DEBUG: 311 is last card. Need logic to reshuffle before overflowing cards[] array. Check when Vegas reshuffles.
-    this.setState({
-      dealCard,
-      player,
-    });
-    this.updateScore(1); // update score for player
   }
   updateScore(who) {
     let score = 0;
@@ -101,7 +92,16 @@ class App extends Component {
       scores,
       bust,
     })
-}
+  }
+  playerHit() {
+    let {player, dealCard} = this.state;
+    player.push(dealCard++); // push card on player[] array, then point to next dealCard: DEBUG: 311 is last card. Need logic to reshuffle before overflowing cards[] array. Check when Vegas reshuffles.
+    this.setState({
+      dealCard,
+      player,
+    });
+    this.updateScore(1); // update score for player
+  }
   render() {
     const { cards, dealer, player, playerHit,scores } = this.state;
     if (!cards || !dealer.length || !player.length) {
