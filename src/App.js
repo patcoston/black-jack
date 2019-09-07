@@ -44,6 +44,8 @@ class App extends Component {
       console.log('dealCards()');
       console.log(this.state);
     });
+    this.updateScore(0);
+    this.updateScore(1);
   }
   getData() {
     console.log('getData()');
@@ -75,7 +77,8 @@ class App extends Component {
   updateScore(who) {
     let score = 0;
     let cardValue = 0;
-    const { cards, hand, scores, bust } = this.state;
+    const { cards, dealer, player, scores, bust } = this.state;
+    const hand = who ? player : dealer;
     for (let i = 0; i < hand.length; i++) {
         const card = hand[i];
         const value = cards[card].value;
