@@ -15,7 +15,9 @@ class App extends Component {
       scores: [0, 0], // score for dealer and player
       bust: [false, false], // did dealer or player bust?
       win: [false, false], // did dealer or player win?
+      stand: [false, false], // did dealer or player stand?
       playerHit: this.playerHit.bind(this), // click method for player getting another card
+      playerStand: this.playerStand.bind(this), // click method for player standing
     };
     this.getData();
   }
@@ -111,8 +113,14 @@ class App extends Component {
     });
     this.updateScore(1); // update score for player
   }
+  // dealer or player stands. who 0=dealer, 1=player
+  playerStand(who) {
+    let {stand} = this.state;
+    stand[who] = true;
+    this.setState({stand});
+  }
   render() {
-    const { cards, dealer, player, playerHit, scores, bust, win } = this.state;
+    const { cards, dealer, player, playerHit, playerStand, scores, bust, win, stand } = this.state;
     const dealerScore = scores[0];
     const playerScore = scores[1];
     console.log(`render() dealerScore=${dealerScore} playerScore=${playerScore}`);
@@ -129,6 +137,7 @@ class App extends Component {
             <span> Score: {dealerScore}</span>
             {bust[0] && <span> Bust!</span>}
             {win[0] && <span> Win!</span>}
+            {stand[0] && <span> Stand</span>}
           </h2>
           <Hand cards={cards} hand={dealer} />
         </section>
@@ -138,9 +147,16 @@ class App extends Component {
             <span> Score: {playerScore}</span>
             {bust[1] && <span> Bust!</span>}
             {win[1] && <span> Win!</span>}
+            {stand[1] && <span> Stand</span>}
           </h2>
           <Hand cards={cards} hand={player} />
-          <Actions hit={playerHit} />
+          <Actions
+            playerHit={playerHit}
+            playerStand={playerStand}
+            bust={bust}
+            win={win}
+            stand={stand}
+            who={1} />
         </section>
       </div>
     );  

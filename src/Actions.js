@@ -4,15 +4,22 @@ class Actions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            hit: props.hit, // method to add card to play hand
+            playerHit: props.playerHit, // method to add card to play hand
+            playerStand: props.playerStand,
+            bust: props.bust,
+            win: props.win,
+            stand: props.stand,
+            who: props.who,
         }
     }
 
     render() {
-        const { hit } = this.state;
+        const { playerHit, playerStand, bust, win, stand, who } = this.state;
+        const disable = bust[who] || win[who] || stand[who];
         return (
             <div>
-                <button disabled={false} onClick={hit}>Hit</button>
+                <button disabled={disable} onClick={playerStand}>Stand</button>
+                <button disabled={disable} onClick={playerHit}>Hit</button>
             </div>
         );
     }
