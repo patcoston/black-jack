@@ -3,13 +3,16 @@ import Hand from './Hand';
 import Actions from './Actions';
 import './App.css';
 
+const decks = 6;
+const totalCards = decks * 52;
+const nextCard = () => parseInt(Math.random() * totalCards); // get next card randomly from 6 decks of cards
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       deckID: null, // the API deckID which is used to shuffle and obtain decks of cards
-      cards: null, // will be array of 312 cards which is 6 decks of 52 cards per deck
-      dealCard: 0, // next card to deal. It is an index in cards[] array
+      cards: null, // array of cards
       dealer: [], // array of indexes into cards[] array for dealers cards
       player: [], // array of indexes into cards[] array for players cards
       scores: [0, 0], // score for dealer and player
@@ -23,12 +26,12 @@ class App extends Component {
   }
   getData() {
     console.log('getData()');
-    fetch('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6')
+    fetch(`https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=${decks}`)
     .then(data => data.json())
     .then(json => {
       this.setState({ deckID: json.deck_id }, () => {
         const { deckID } = this.state;
-        const url = `https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=312`;
+        const url = `https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=${totalCards}`;
         fetch(url)
         .then(data => data.json())
         .then(json => this.setState({ cards: json.cards }, () => {
@@ -42,22 +45,18 @@ class App extends Component {
   // deals the cards for players and dealer
   dealCards(playerCards, dealerCards) {
     console.log(`dealCards()`);
-    // DEBUG: Need to add check if (dealCard + playCards + dealerCards) is greater than or equal to 312, then need to reshuffle
-    // DEBUG: Idea - can cheat and instead just randomly pull cards from deck
-    let {dealCard} = this.state;
     let player = [...this.state.player]; // clone player array
     let dealer = [...this.state.dealer]; // clone dealer array
     // deal player cards
     for (let card = 0; card < playerCards; card++) {
-      player.push(dealCard++);
+      player.push(nextCard());
     }
     // deal dealer cards
     for (let card = 0; card < dealerCards; card++) {
-      dealer.push(dealCard++);
+      dealer.push(nextCard());
     }
     // update which card is to be dealt next, and arrays for dealer and player cards
     this.setState({
-      dealCard,
       player,
       dealer,
     }, () => {
@@ -105,10 +104,9 @@ class App extends Component {
     })
   }
   playerHit() {
-    let {player, dealCard} = this.state;
-    player.push(dealCard++); // push card on player[] array, then point to next dealCard: DEBUG: 311 is last card. Need logic to reshuffle before overflowing cards[] array. Check when Vegas reshuffles.
+    let {player} = this.state;
+    player.push(nextCard()); // push next card on player[] array
     this.setState({
-      dealCard,
       player,
     });
     this.updateScore(1); // update score for player
