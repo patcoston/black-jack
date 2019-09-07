@@ -5,7 +5,7 @@ import './App.css';
 
 const decks = 6;
 const totalCards = decks * 52;
-const nextCard = () => parseInt(Math.random() * totalCards); // get next card randomly from 6 decks of cards
+const nextCard = () => parseInt(Math.random() * totalCards); // get next card randomly
 
 class App extends Component {
   constructor(props) {
@@ -25,7 +25,6 @@ class App extends Component {
     this.getData();
   }
   getData() {
-    console.log('getData()');
     fetch(`https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=${decks}`)
     .then(data => data.json())
     .then(json => {
@@ -44,7 +43,6 @@ class App extends Component {
   }
   // deals the cards for players and dealer
   dealCards(playerCards, dealerCards) {
-    console.log(`dealCards()`);
     let player = [...this.state.player]; // clone player array
     let dealer = [...this.state.dealer]; // clone dealer array
     // deal player cards
@@ -60,20 +58,15 @@ class App extends Component {
       player,
       dealer,
     }, () => {
-      console.log('dealCards() state');
-      console.log(this.state);
       this.updateScore(0);
       this.updateScore(1);
-      });
+    });
   }
   updateScore(who) {
-    console.log(`updateScore(${who})`);
     let score = 0;
     let cardValue = 0;
     const { cards, dealer, player, scores, bust, win } = this.state;
-    console.log(`dealer=${dealer} player=${player}`);
     const hand = who ? player : dealer;
-    console.log(`hand=${hand}`);
     for (let i = 0; i < hand.length; i++) {
         const card = hand[i];
         const value = cards[card].value;
@@ -92,16 +85,12 @@ class App extends Component {
         bust[who] = true; // dealer or player bust
         win[1-who] = true; // player or dealer win
     }
-    console.log(`who=${who} score=${score}`);
     scores[who] = score; // dealer or player score
     this.setState({
       scores,
       bust,
       win,
-    }, () => {
-      console.log(`updateScore(${who}) state`);
-      console.log(this.state);
-    })
+    });
   }
   playerHit() {
     let {player} = this.state;
@@ -121,7 +110,6 @@ class App extends Component {
     const { cards, dealer, player, playerHit, playerStand, scores, bust, win, stand } = this.state;
     const dealerScore = scores[0];
     const playerScore = scores[1];
-    console.log(`render() dealerScore=${dealerScore} playerScore=${playerScore}`);
     if (!cards || !dealer.length || !player.length) {
       return (
         <div>Loading ...</div>
@@ -159,7 +147,6 @@ class App extends Component {
       </div>
     );  
   }
-
 }
 
 export default App;
