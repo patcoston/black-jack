@@ -103,7 +103,7 @@ class App extends Component {
     this.updateScore(1); // update score for player
   }
   render() {
-    const { cards, dealer, player, playerHit,scores } = this.state;
+    const { cards, dealer, player, playerHit, scores } = this.state;
     if (!cards || !dealer.length || !player.length) {
       return (
         <div>Loading ...</div>
@@ -112,11 +112,11 @@ class App extends Component {
     return (
       <div className="App">
         <section>
-          <h2>Dealer <Score cards={cards} hand={dealer} score={scores[0]} /></h2>
+          <h2>Dealer <Score score={scores[0]} /></h2>
           <Hand cards={cards} hand={dealer} />
         </section>
         <section>
-          <h2>Player <Score cards={cards} hand={player} score={scores[1]} /></h2>
+          <h2>Player <Score score={scores[1]} /></h2>
           <Hand cards={cards} hand={player} />
           <Actions hit={playerHit} />
         </section>
