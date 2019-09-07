@@ -21,6 +21,7 @@ class App extends Component {
       stand: [false, false], // did dealer or player stand?
       playerHit: this.playerHit.bind(this), // click method for player getting another card
       playerStand: this.playerStand.bind(this), // click method for player standing
+      resetCards: this.resetCards.bind(this), // click method for resetting cards
     };
     this.getData();
   }
@@ -40,6 +41,16 @@ class App extends Component {
       });
     })
     .catch(err => console.log(`Shuffle API Fetch Error: ${err}`));
+  }
+  resetCards() {
+    this.setState({
+      scores: [0, 0],
+      player: [],
+      dealer: [],
+      bust: [false, false],
+      win: [false, false],
+      stand: [false, false],
+    }, () => this.dealCards(2, 2));
   }
   // deals the cards for players and dealer
   dealCards(playerCards, dealerCards) {
@@ -107,7 +118,7 @@ class App extends Component {
     this.setState({stand});
   }
   render() {
-    const { cards, dealer, player, playerHit, playerStand, scores, bust, win, stand } = this.state;
+    const { cards, dealer, player, playerHit, playerStand, resetCards, scores, bust, win, stand } = this.state;
     const dealerScore = scores[0];
     const playerScore = scores[1];
     if (!cards || !dealer.length || !player.length) {
@@ -139,6 +150,7 @@ class App extends Component {
           <Actions
             playerHit={playerHit}
             playerStand={playerStand}
+            resetCards={resetCards}
             bust={bust}
             win={win}
             stand={stand}
