@@ -14,6 +14,7 @@ class App extends Component {
       player: [], // array of indexes into cards[] array for players cards
       scores: [0, 0], // score for dealer and player
       bust: [false, false], // did dealer or player bust?
+      win: [false, false], // did dealer or player win?
       playerHit: this.playerHit.bind(this), // click method for player getting another card
     };
     this.getData();
@@ -68,7 +69,7 @@ class App extends Component {
     console.log(`updateScore(${who})`);
     let score = 0;
     let cardValue = 0;
-    const { cards, dealer, player, scores, bust } = this.state;
+    const { cards, dealer, player, scores, bust, win } = this.state;
     console.log(`dealer=${dealer} player=${player}`);
     const hand = who ? player : dealer;
     console.log(`hand=${hand}`);
@@ -88,12 +89,14 @@ class App extends Component {
     }
     if (score > 21) { // if score > 21
         bust[who] = true; // dealer or player bust
+        win[1-who] = true; // player or dealer win
     }
     console.log(`who=${who} score=${score}`);
     scores[who] = score; // dealer or player score
     this.setState({
       scores,
       bust,
+      win,
     }, () => {
       console.log(`updateScore(${who}) state`);
       console.log(this.state);
@@ -109,7 +112,7 @@ class App extends Component {
     this.updateScore(1); // update score for player
   }
   render() {
-    const { cards, dealer, player, playerHit, scores } = this.state;
+    const { cards, dealer, player, playerHit, scores, bust, win } = this.state;
     const dealerScore = scores[0];
     const playerScore = scores[1];
     console.log(`render() dealerScore=${dealerScore} playerScore=${playerScore}`);
@@ -121,11 +124,21 @@ class App extends Component {
     return (
       <div className="App">
         <section>
-          <h2>Dealer <span>{dealerScore}</span></h2>
+          <h2>
+            Dealer
+            <span> Score: {dealerScore}</span>
+            {bust[0] && <span> Bust!</span>}
+            {win[0] && <span> Win!</span>}
+          </h2>
           <Hand cards={cards} hand={dealer} />
         </section>
         <section>
-          <h2>Player <span>{playerScore}</span></h2>
+        <h2>
+            Player
+            <span> Score: {playerScore}</span>
+            {bust[1] && <span> Bust!</span>}
+            {win[1] && <span> Win!</span>}
+          </h2>
           <Hand cards={cards} hand={player} />
           <Actions hit={playerHit} />
         </section>
