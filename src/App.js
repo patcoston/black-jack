@@ -1,24 +1,21 @@
 import React, {Component} from 'react';
 import Hand from './Hand';
 import Actions from './Actions';
-import Score from './Score';
 import './App.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
-  }
-  state = {
-    deckID: null, // the API deckID which is used to shuffle and obtain decks of cards
-    cards: null, // will be array of 312 cards which is 6 decks of 52 cards per deck
-    dealCard: 0, // next card to deal. It is an index in cards[] array
-    dealer: [], // array of indexes into cards[] array for dealers cards
-    player: [], // array of indexes into cards[] array for players cards
-    scores: [0, 0], // score for dealer and player
-    bust: [false, false], // did dealer or player bust?
-    playerHit: this.playerHit.bind(this), // click method for player getting another card
-  };
-  componentDidMount() {
+    this.state = {
+      deckID: null, // the API deckID which is used to shuffle and obtain decks of cards
+      cards: null, // will be array of 312 cards which is 6 decks of 52 cards per deck
+      dealCard: 0, // next card to deal. It is an index in cards[] array
+      dealer: [], // array of indexes into cards[] array for dealers cards
+      player: [], // array of indexes into cards[] array for players cards
+      scores: [0, 0], // score for dealer and player
+      bust: [false, false], // did dealer or player bust?
+      playerHit: this.playerHit.bind(this), // click method for player getting another card
+    };
     this.getData();
   }
   getData() {
@@ -41,7 +38,9 @@ class App extends Component {
   }
   // deals the cards for players and dealer
   dealCards(playerCards, dealerCards) {
+    console.log(`dealCards()`);
     // DEBUG: Need to add check if (dealCard + playCards + dealerCards) is greater than or equal to 312, then need to reshuffle
+    // DEBUG: Idea - can cheat and instead just randomly pull cards from deck
     let {dealCard} = this.state;
     let player = [...this.state.player]; // clone player array
     let dealer = [...this.state.dealer]; // clone dealer array
@@ -59,17 +58,20 @@ class App extends Component {
       player,
       dealer,
     }, () => {
-      console.log('dealCards()');
+      console.log('dealCards() state');
       console.log(this.state);
-    });
-    this.updateScore(0);
-    this.updateScore(1);
+      this.updateScore(0);
+      this.updateScore(1);
+      });
   }
   updateScore(who) {
+    console.log(`updateScore(${who})`);
     let score = 0;
     let cardValue = 0;
     const { cards, dealer, player, scores, bust } = this.state;
+    console.log(`dealer=${dealer} player=${player}`);
     const hand = who ? player : dealer;
+    console.log(`hand=${hand}`);
     for (let i = 0; i < hand.length; i++) {
         const card = hand[i];
         const value = cards[card].value;
@@ -87,10 +89,14 @@ class App extends Component {
     if (score > 21) { // if score > 21
         bust[who] = true; // dealer or player bust
     }
+    console.log(`who=${who} score=${score}`);
     scores[who] = score; // dealer or player score
     this.setState({
       scores,
       bust,
+    }, () => {
+      console.log(`updateScore(${who}) state`);
+      console.log(this.state);
     })
   }
   playerHit() {
@@ -104,6 +110,9 @@ class App extends Component {
   }
   render() {
     const { cards, dealer, player, playerHit, scores } = this.state;
+    const dealerScore = scores[0];
+    const playerScore = scores[1];
+    console.log(`render() dealerScore=${dealerScore} playerScore=${playerScore}`);
     if (!cards || !dealer.length || !player.length) {
       return (
         <div>Loading ...</div>
@@ -112,11 +121,11 @@ class App extends Component {
     return (
       <div className="App">
         <section>
-          <h2>Dealer <Score score={scores[0]} /></h2>
+          <h2>Dealer <span>{dealerScore}</span></h2>
           <Hand cards={cards} hand={dealer} />
         </section>
         <section>
-          <h2>Player <Score score={scores[1]} /></h2>
+          <h2>Player <span>{playerScore}</span></h2>
           <Hand cards={cards} hand={player} />
           <Actions hit={playerHit} />
         </section>
