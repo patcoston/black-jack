@@ -12,7 +12,7 @@ class Actions extends Component {
         const { hit } = this.state;
         return (
             <div>
-                <button onClick={hit}>Hit</button>
+                <button disabled={false} onClick={hit}>Hit</button>
             </div>
         );
     }

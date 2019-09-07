@@ -17,7 +17,6 @@ class App extends Component {
     playerHit: this.playerHit.bind(this), // click method for player getting another card
   };
   componentDidMount() {
-    console.log('componentDidMount()');
     this.getData();
   }
   // deals the cards for players and dealer
@@ -45,7 +44,6 @@ class App extends Component {
     });
   }
   playerHit() {
-    debugger;
     let {player, dealCard} = this.state;
     player.push(dealCard++); // push card on player[] array, then point to next dealCard: DEBUG: 311 is last card. Need logic to reshuffle before overflowing cards[] array. Check when Vegas reshuffles.
     this.setState({
@@ -64,7 +62,7 @@ class App extends Component {
         fetch(url)
         .then(data => data.json())
         .then(json => this.setState({ cards: json.cards }, () => {
-          this.dealCards(2, 2); // deal two cards to play and two cards to dealer
+          this.dealCards(2, 2); // deal two cards to player and two cards to dealer
         }))
         .catch(err => console.log(`Deck API Fetch Error: ${err}`));
       });
@@ -81,11 +79,11 @@ class App extends Component {
     return (
       <div className="App">
         <section>
-          <h2>Dealer <Score cards={cards} hand={dealer} /></h2>
+          <h2>Dealer <Score cards={cards} hand={dealer} who={0} /></h2>
           <Hand cards={cards} hand={dealer} />
         </section>
         <section>
-          <h2>Player <Score cards={cards} hand={player} /></h2>
+          <h2>Player <Score cards={cards} hand={player} who={1} /></h2>
           <Hand cards={cards} hand={player} />
           <Actions hit={playerHit} />
         </section>
