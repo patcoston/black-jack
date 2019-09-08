@@ -2,8 +2,7 @@
 
 ## How it works
 
-- Dealer will hit until win, tie or bust
-- The only time a tie will occurs is when you and dealer have 21
+- Dealer will hit until win, bust, or tie at 21
 
 ## TODO:
 

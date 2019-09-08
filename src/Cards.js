@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 
 const RenderCards = (props) => {
-    const { cards, hand } = props;
+    const { cards, hand, me } = props;
     console.log(`RenderCards() hand=${hand}`);
-    return hand.map(card => <img src={cards[card].image} alt={cards[card].code} key={cards[card].code} /> );
+    return hand.map((card, index) => <img src={cards[card].image} alt={cards[card].code} key={cards[card].code + me + index} /> );
 }
 
 class Cards extends Component {
@@ -12,6 +12,7 @@ class Cards extends Component {
         this.state = {
             cards: props.cards, // array of all cards
             hand: props.hand, // array of indexes into cards array for that hand
+            me: props.me, // 0=dealer 1=player
         }
     }
 

@@ -35,7 +35,7 @@ class App extends Component {
         fetch(url)
         .then(data => data.json())
         .then(json => this.setState({ cards: json.cards }, () => {
-          this.dealCards(1, 2); // deal one card to dealer and two cards to player
+          this.dealCards(false, 1, 2); // player's turn, deal one card to dealer and two cards to player
         }))
         .catch(err => console.log(`Deck API Fetch Error: ${err}`));
       });
@@ -50,17 +50,22 @@ class App extends Component {
       bust: [false, false],
       win: [false, false],
       stand: [false, false],
-    }, () => this.dealCards(1, 2)); // deal one card to dealer and two cards to player
+    }, () => this.dealCards(false, 1, 2)); // player's turn, deal one card to dealer and two cards to player
   }
   // deals the cards for players and dealer
-  dealCards(dealerCards, playerCards) {
-    console.log(`dealCards(${dealerCards},${playerCards})`);
+  // dealersTurn is true if it's the dealers turn, false otherwise
+  dealCards(dealersTurn, dealerCards, playerCards) {
+    console.log(`dealCards(${dealersTurn}, ${dealerCards},${playerCards})`);
     const { cards } = this.state;
     let player = [...this.state.player]; // clone player array so it can be mutated
     let dealer = [...this.state.dealer]; // clone dealer array so it can be mutated
     const scores = [...this.state.scores]; // clone so it can be mutated
     const bust = [...this.state.bust]; // clone so it can be mutated
     const win = [...this.state.win]; // clone so it can be mutated
+    const stand = [...this.state.stand]; // clone so it can be mutated
+    if (dealersTurn) { // if it's the dealer's turn
+      stand[1] = true; // player stands
+    }
     // deal player cards
     for (let card = 0; card < playerCards; card++) {
       player.push(nextCard());
@@ -69,11 +74,13 @@ class App extends Component {
     for (let card = 0; card < dealerCards; card++) {
       dealer.push(nextCard());
     }
-    // iterate through dealer and player who=0=dealer who=1=player
-    for (let who = 0; who < 2; who++) {
+    // Calculate new score(s)
+    // iterate through dealer and player me 0=dealer me 1=player
+    for (let me = 0; me < 2; me++) {
       let score = 0;
       let cardValue = 0;
-      const hand = who ? player : dealer;
+      const hand = me ? player : dealer;
+      const other = 1 - me;
       for (let i = 0; i < hand.length; i++) {
           const card = hand[i];
           const value = cards[card].value;
@@ -88,11 +95,19 @@ class App extends Component {
           }
           score += cardValue;
       }
+      scores[me] = score; // dealer's or player's score
+      // check for bust (dealer or player), dealer ties at 21, or dealer wins
       if (score > 21) { // if score > 21
-          bust[who] = true; // dealer or player bust
-          win[1-who] = true; // if player bust, then dealer win and vice-versa
+        bust[me] = true; // dealer or player bust
+        win[other] = true; // if player bust, then dealer win and vice-versa
+      } else if (dealersTurn && score[0] === 21 && score[1] === 21) { // if dealer's hit and the dealer and player both have 21, then it's a tie
+        stand[0] = true; // dealer stands
+        win[0] = true; // both dealer and play win, it's a tie
+        win[1] = true;
+      } else if (dealersTurn && score[0] > score[1]) { // if dealer's hit and dealer has higher score
+        stand[0] = true; // dealer stands
+        win[0] = true; // dealer wins
       }
-      scores[who] = score; // dealer or player score
     }
     this.setState({
       dealer,
@@ -100,29 +115,33 @@ class App extends Component {
       scores,
       bust,
       win,
+      stand,
     }, () => {
       console.log(`dealCards() dealer=${dealer} player=${player} scores=${scores} bust=${bust} win=${win}`);
     });
+    const winner = win[0] || win[1];
+    return winner;
   }
   playerHit() {
-    this.dealCards(0, 1); // deal 1 card to player
+    this.dealCards(false, 0, 1); // player's turn, deal 1 card to player
   }
-  // dealer or player stands. me can be 0=dealer or 1=player
-  playerStand(me) {
-    let {scores} = this.state;
-    let stand = [...this.state.stand]; // clone stand[] array for mutation
-    let win = [...this.state.win]; // clone win[] array for mutation
-    let them = 1 - me;
-    stand[me] = true; // dealer or player stands
-    if (scores[me] > scores[them]) { // figure out who won
-      win[me] = true;
-    } else {
-      win[them] = true;
+  // Player stands. Dealer plays.
+  playerStand() {
+    console.log('playerStand()');
+    let winner = false;
+    const dealerTurn = () => {
+      console.log('dealerTurn()');
+      setTimeout(
+        () => {
+          winner = this.dealCards(true, 1, 0);
+          if (!winner) {
+            dealerTurn();
+          }
+        }, // dealer's turn, deal 1 card to dealer
+        500 // dealer hits every 0.5 seconds until dealer busts or ties at 21
+      );
     }
-    this.setState({
-      stand,
-      win,
-    });
+    dealerTurn();
   }
   render() {
     const { cards, dealer, player, playerHit, playerStand, resetCards, scores, bust, win, stand } = this.state;
@@ -155,8 +174,7 @@ class App extends Component {
           resetCards={resetCards}
           bust={bust[1]}
           win={win[1]}
-          stand={stand[1]}
-          who={1} />
+          stand={stand[1]} />
       </div>
     );  
   }

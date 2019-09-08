@@ -10,7 +10,6 @@ class Actions extends Component {
             bust: props.bust,
             win: props.win,
             stand: props.stand,
-            who: props.who,
         }
     }
 
@@ -23,12 +22,12 @@ class Actions extends Component {
     }
 
     render() {
-        const { playerHit, playerStand, resetCards, bust, win, stand, who } = this.state;
+        const { playerHit, playerStand, resetCards, bust, win, stand } = this.state;
         const disabled = bust || win || stand;
         return (
             <div>
                 <button disabled={!disabled} onClick={() => resetCards()}>Deal Cards</button>
-                <button disabled={disabled} onClick={() => playerStand(who)}>Stand</button>
+                <button disabled={disabled} onClick={() => playerStand()}>Stand</button>
                 <button disabled={disabled} onClick={() => playerHit()}>Hit</button>
             </div>
         );

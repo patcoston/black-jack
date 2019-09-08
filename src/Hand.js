@@ -28,6 +28,7 @@ class Hand extends Component {
     render() {
         const { cards, hand, score, bust, win, stand, me } = this.state;
         const them = 1 - me;
+        const tie = win[0] && win[1];
         return (
             <section>
                 <h2>
@@ -35,10 +36,11 @@ class Hand extends Component {
                     <span> Score: {score}</span>
                     {stand && <span> Stand</span>}
                     {bust && <span> Bust!</span>}
-                    {win[me] && <span> Win!</span>}
-                    {win[them] && <span> Lose!</span>}
+                    {win[me] && !tie && <span> Win!</span>}
+                    {win[them] && !tie && <span> Lose!</span>}
+                    {tie && <span>Tie!</span>}
                 </h2>
-                <Cards cards={cards} hand={hand} />
+                <Cards cards={cards} hand={hand} me={me} />
             </section>
         );
     }
