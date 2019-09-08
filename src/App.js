@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Hand from './Hand';
+import Cards from './Cards';
 import Actions from './Actions';
 import './App.css';
 
@@ -132,7 +132,7 @@ class App extends Component {
             {win[0] && <span> Win!</span>}
             {stand[0] && <span> Stand</span>}
           </h2>
-          <Hand cards={cards} hand={dealer} />
+          <Cards cards={cards} hand={dealer} />
         </section>
         <section>
         <h2>
@@ -142,7 +142,7 @@ class App extends Component {
             {win[1] && <span> Win!</span>}
             {stand[1] && <span> Stand</span>}
           </h2>
-          <Hand cards={cards} hand={player} />
+          <Cards cards={cards} hand={player} />
           <Actions
             playerHit={playerHit}
             playerStand={playerStand}
