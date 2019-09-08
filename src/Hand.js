@@ -9,9 +9,9 @@ class Hand extends Component {
             hand: props.hand, // array of indexes into cards array for that hand
             score: props.score, // score
             bust: props.bust, // bust? true/false
-            win: props.win, // win? true/false
+            win: props.win, // win[] array of true/false, index 0=dealer 1=player
             stand: props.stand, // stand? true/false
-            who: props.who, // who? 0=dealer 1=player
+            me: props.who, // me is 0=dealer 1=player
         }
     }
 
@@ -20,21 +20,23 @@ class Hand extends Component {
             hand: nextProps.hand, // array of indexes into cards array for that hand
             score: nextProps.score, // score
             bust: nextProps.bust, // bust? true/false
-            win: nextProps.win, // win? true/false
+            win: nextProps.win, // win[] array of true/false, index 0=dealer 1=player
             stand: nextProps.stand, // stand? true/false
         });
     }
 
     render() {
-        const { cards, hand, score, bust, win, stand, who } = this.state;
+        const { cards, hand, score, bust, win, stand, me } = this.state;
+        const them = 1 - me;
         return (
             <section>
                 <h2>
-                    <span>{who ? 'Player' : 'Dealer'}</span>
+                    <span>{me ? 'Player' : 'Dealer'}</span>
                     <span> Score: {score}</span>
-                    {bust && <span> Bust!</span>}
-                    {win && <span> Win!</span>}
                     {stand && <span> Stand</span>}
+                    {bust && <span> Bust!</span>}
+                    {win[me] && <span> Win!</span>}
+                    {win[them] && <span> Lose!</span>}
                 </h2>
                 <Cards cards={cards} hand={hand} />
             </section>

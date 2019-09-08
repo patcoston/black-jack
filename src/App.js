@@ -107,11 +107,22 @@ class App extends Component {
   playerHit() {
     this.dealCards(0, 1); // deal 1 card to player
   }
-  // dealer or player stands. who 0=dealer, 1=player
-  playerStand(who) {
-    let {stand} = this.state;
-    stand[who] = true;
-    this.setState({stand});
+  // dealer or player stands. me can be 0=dealer or 1=player
+  playerStand(me) {
+    let {scores} = this.state;
+    let stand = [...this.state.stand]; // clone stand[] array for mutation
+    let win = [...this.state.win]; // clone win[] array for mutation
+    let them = 1 - me;
+    stand[me] = true; // dealer or player stands
+    if (scores[me] > scores[them]) { // figure out who won
+      win[me] = true;
+    } else {
+      win[them] = true;
+    }
+    this.setState({
+      stand,
+      win,
+    });
   }
   render() {
     const { cards, dealer, player, playerHit, playerStand, resetCards, scores, bust, win, stand } = this.state;
@@ -127,7 +138,7 @@ class App extends Component {
           hand={dealer}
           score={scores[0]}
           bust={bust[0]}
-          win={win[0]}
+          win={win}
           stand={stand[0]}
           who={0} />
         <Hand
@@ -135,7 +146,7 @@ class App extends Component {
           hand={player}
           score={scores[1]}
           bust={bust[1]}
-          win={win[1]}
+          win={win}
           stand={stand[1]}
           who={1} />
         <Actions
