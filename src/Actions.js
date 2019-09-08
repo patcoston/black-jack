@@ -14,6 +14,14 @@ class Actions extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            bust: nextProps.bust, // bust? true/false
+            win: nextProps.win, // win? true/false
+            stand: nextProps.stand, // stand? true/false
+        });
+    }
+
     render() {
         const { playerHit, playerStand, resetCards, bust, win, stand, who } = this.state;
         const disabled = bust || win || stand;
