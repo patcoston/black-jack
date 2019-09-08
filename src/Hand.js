@@ -15,14 +15,14 @@ class Hand extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
+    static getDerivedStateFromProps(nextProps) {
+        return {
             hand: nextProps.hand, // array of indexes into cards array for that hand
             score: nextProps.score, // score
             bust: nextProps.bust, // bust? true/false
             win: nextProps.win, // win[] array of true/false, index 0=dealer 1=player
             stand: nextProps.stand, // stand? true/false
-        });
+        };
     }
 
     render() {
@@ -38,7 +38,7 @@ class Hand extends Component {
                     {bust && <span> Bust!</span>}
                     {win[me] && !tie && <span> Win!</span>}
                     {win[them] && !tie && <span> Lose!</span>}
-                    {tie && <span>Tie!</span>}
+                    {tie && <span> Tie!</span>}
                 </h2>
                 <Cards cards={cards} hand={hand} me={me} />
             </section>

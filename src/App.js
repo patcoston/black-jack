@@ -55,7 +55,6 @@ class App extends Component {
   // deals the cards for players and dealer
   // dealersTurn is true if it's the dealers turn, false otherwise
   dealCards(dealersTurn, dealerCards, playerCards) {
-    console.log(`dealCards(${dealersTurn}, ${dealerCards},${playerCards})`);
     const { cards } = this.state;
     let player = [...this.state.player]; // clone player array so it can be mutated
     let dealer = [...this.state.dealer]; // clone dealer array so it can be mutated
@@ -63,6 +62,7 @@ class App extends Component {
     const bust = [...this.state.bust]; // clone so it can be mutated
     const win = [...this.state.win]; // clone so it can be mutated
     const stand = [...this.state.stand]; // clone so it can be mutated
+    //console.log(`dealCards(${dealersTurn}, ${dealerCards},${playerCards}) scores=${scores} bust=${bust} win=${win} stand=${stand}`);
     if (dealersTurn) { // if it's the dealer's turn
       stand[1] = true; // player stands
     }
@@ -76,7 +76,15 @@ class App extends Component {
     }
     // Calculate new score(s)
     // iterate through dealer and player me 0=dealer me 1=player
-    for (let me = 0; me < 2; me++) {
+    let first = 0;
+    let last = 1;
+    if (dealerCards === 0) {
+      first = 1;
+    }
+    if (playerCards === 0) {
+      last = 0;
+    }
+    for (let me = first; me <= last; me++) {
       let score = 0;
       let cardValue = 0;
       const hand = me ? player : dealer;
@@ -97,14 +105,18 @@ class App extends Component {
       }
       scores[me] = score; // dealer's or player's score
       // check for bust (dealer or player), dealer ties at 21, or dealer wins
+      console.log(`score=${score} scores=${scores} stand=${stand} bust=${bust} win=${win}`);
       if (score > 21) { // if score > 21
+        console.log('Bust!');
         bust[me] = true; // dealer or player bust
         win[other] = true; // if player bust, then dealer win and vice-versa
-      } else if (dealersTurn && score[0] === 21 && score[1] === 21) { // if dealer's hit and the dealer and player both have 21, then it's a tie
+      } else if (dealersTurn && me === 0 && scores[0] === 21 && scores[1] === 21) { // if dealer's hit and the dealer and player both have 21, then it's a tie
+        console.log('Dealers Turn: Tie for 21');
         stand[0] = true; // dealer stands
         win[0] = true; // both dealer and play win, it's a tie
         win[1] = true;
-      } else if (dealersTurn && score[0] > score[1]) { // if dealer's hit and dealer has higher score
+      } else if (dealersTurn && me === 0 && scores[0] > scores[1]) { // if dealer's hit and dealer has higher score
+        console.log('Dealers Turn: Dealer won!')
         stand[0] = true; // dealer stands
         win[0] = true; // dealer wins
       }
@@ -117,7 +129,7 @@ class App extends Component {
       win,
       stand,
     }, () => {
-      console.log(`dealCards() dealer=${dealer} player=${player} scores=${scores} bust=${bust} win=${win}`);
+      console.log(`setState() dealer=${dealer} player=${player} scores=${scores} stand=${stand} bust=${bust} win=${win}`);
     });
     const winner = win[0] || win[1];
     return winner;
@@ -127,10 +139,8 @@ class App extends Component {
   }
   // Player stands. Dealer plays.
   playerStand() {
-    console.log('playerStand()');
     let winner = false;
     const dealerTurn = () => {
-      console.log('dealerTurn()');
       setTimeout(
         () => {
           winner = this.dealCards(true, 1, 0);
@@ -138,7 +148,7 @@ class App extends Component {
             dealerTurn();
           }
         }, // dealer's turn, deal 1 card to dealer
-        500 // dealer hits every 0.5 seconds until dealer busts or ties at 21
+        2000 // dealer hits every second until dealer busts or ties at 21
       );
     }
     dealerTurn();

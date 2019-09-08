@@ -13,12 +13,12 @@ class Actions extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            bust: nextProps.bust, // bust? true/false
-            win: nextProps.win, // win? true/false
-            stand: nextProps.stand, // stand? true/false
-        });
+    static getDerivedStateFromProps(props) {
+        return {
+            bust: props.bust, // bust? true/false
+            win: props.win, // win? true/false
+            stand: props.stand, // stand? true/false
+        };
     }
 
     render() {
@@ -26,7 +26,7 @@ class Actions extends Component {
         const disabled = bust || win || stand;
         return (
             <div>
-                <button disabled={!disabled} onClick={() => resetCards()}>Deal Cards</button>
+                <button disabled={false} onClick={() => resetCards()}>Deal Cards</button>
                 <button disabled={disabled} onClick={() => playerStand()}>Stand</button>
                 <button disabled={disabled} onClick={() => playerHit()}>Hit</button>
             </div>
