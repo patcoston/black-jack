@@ -14,7 +14,14 @@ class Hand extends Component {
             hand: props.hand, // array of indexes into cards array for that hand
         }
     }
-    
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            cards: nextProps.cards, // array of all cards
+            hand: nextProps.hand, // array of indexes into cards array for that hand
+        });
+    }
+
     render() {
         const { cards, hand } = this.state;
         return (
