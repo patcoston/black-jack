@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Cards from './Cards';
+import Hand from './Hand';
 import Actions from './Actions';
 import './App.css';
 
@@ -115,8 +115,6 @@ class App extends Component {
   }
   render() {
     const { cards, dealer, player, playerHit, playerStand, resetCards, scores, bust, win, stand } = this.state;
-    const dealerScore = scores[0];
-    const playerScore = scores[1];
     if (!cards || !dealer.length || !player.length) {
       return (
         <div>Loading ...</div>
@@ -124,34 +122,30 @@ class App extends Component {
     }
     return (
       <div className="App">
-        <section>
-          <h2>
-            Dealer
-            <span> Score: {dealerScore}</span>
-            {bust[0] && <span> Bust!</span>}
-            {win[0] && <span> Win!</span>}
-            {stand[0] && <span> Stand</span>}
-          </h2>
-          <Cards cards={cards} hand={dealer} />
-        </section>
-        <section>
-        <h2>
-            Player
-            <span> Score: {playerScore}</span>
-            {bust[1] && <span> Bust!</span>}
-            {win[1] && <span> Win!</span>}
-            {stand[1] && <span> Stand</span>}
-          </h2>
-          <Cards cards={cards} hand={player} />
-          <Actions
-            playerHit={playerHit}
-            playerStand={playerStand}
-            resetCards={resetCards}
-            bust={bust}
-            win={win}
-            stand={stand}
-            who={1} />
-        </section>
+        <Hand
+          cards={cards}
+          hand={dealer}
+          score={scores[0]}
+          bust={bust[0]}
+          win={win[0]}
+          stand={stand[0]}
+          who={0} />
+        <Hand
+          cards={cards}
+          hand={player}
+          score={scores[1]}
+          bust={bust[1]}
+          win={win[1]}
+          stand={stand[1]}
+          who={1} />
+        <Actions
+          playerHit={playerHit}
+          playerStand={playerStand}
+          resetCards={resetCards}
+          bust={bust[1]}
+          win={win[1]}
+          stand={stand[1]}
+          who={1} />
       </div>
     );  
   }
