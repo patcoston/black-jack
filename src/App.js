@@ -35,7 +35,7 @@ class App extends Component {
         fetch(url)
         .then(data => data.json())
         .then(json => this.setState({ cards: json.cards }, () => {
-          this.dealCards(2, 2); // deal two cards to player and two cards to dealer
+          this.dealCards(1, 2); // deal one card to dealer and two cards to player
         }))
         .catch(err => console.log(`Deck API Fetch Error: ${err}`));
       });
@@ -50,12 +50,17 @@ class App extends Component {
       bust: [false, false],
       win: [false, false],
       stand: [false, false],
-    }, () => this.dealCards(2, 2));
+    }, () => this.dealCards(1, 2)); // deal one card to dealer and two cards to player
   }
   // deals the cards for players and dealer
-  dealCards(playerCards, dealerCards) {
-    let player = [...this.state.player]; // clone player array
-    let dealer = [...this.state.dealer]; // clone dealer array
+  dealCards(dealerCards, playerCards) {
+    console.log(`dealCards(${dealerCards},${playerCards})`);
+    const { cards } = this.state;
+    let player = [...this.state.player]; // clone player array so it can be mutated
+    let dealer = [...this.state.dealer]; // clone dealer array so it can be mutated
+    const scores = [...this.state.scores]; // clone so it can be mutated
+    const bust = [...this.state.bust]; // clone so it can be mutated
+    const win = [...this.state.win]; // clone so it can be mutated
     // deal player cards
     for (let card = 0; card < playerCards; card++) {
       player.push(nextCard());
@@ -64,52 +69,43 @@ class App extends Component {
     for (let card = 0; card < dealerCards; card++) {
       dealer.push(nextCard());
     }
-    // update which card is to be dealt next, and arrays for dealer and player cards
+    // iterate through dealer and player who=0=dealer who=1=player
+    for (let who = 0; who < 2; who++) {
+      let score = 0;
+      let cardValue = 0;
+      const hand = who ? player : dealer;
+      for (let i = 0; i < hand.length; i++) {
+          const card = hand[i];
+          const value = cards[card].value;
+          if (isNaN(value)) {
+              if (value === 'ACE') {
+                  cardValue = 11;
+              } else {
+                  cardValue = 10;
+              }
+          } else {
+              cardValue = parseInt(value);
+          }
+          score += cardValue;
+      }
+      if (score > 21) { // if score > 21
+          bust[who] = true; // dealer or player bust
+          win[1-who] = true; // if player bust, then dealer win and vice-versa
+      }
+      scores[who] = score; // dealer or player score
+    }
     this.setState({
-      player,
       dealer,
-    }, () => {
-      this.updateScore(0);
-      this.updateScore(1);
-    });
-  }
-  updateScore(who) {
-    let score = 0;
-    let cardValue = 0;
-    const { cards, dealer, player, scores, bust, win } = this.state;
-    const hand = who ? player : dealer;
-    for (let i = 0; i < hand.length; i++) {
-        const card = hand[i];
-        const value = cards[card].value;
-        if (isNaN(value)) {
-            if (value === 'ACE') {
-                cardValue = 11;
-            } else {
-                cardValue = 10;
-            }
-        } else {
-            cardValue = parseInt(value);
-        }
-        score += cardValue;
-    }
-    if (score > 21) { // if score > 21
-        bust[who] = true; // dealer or player bust
-        win[1-who] = true; // player or dealer win
-    }
-    scores[who] = score; // dealer or player score
-    this.setState({
+      player,
       scores,
       bust,
       win,
+    }, () => {
+      console.log(`dealCards() dealer=${dealer} player=${player} scores=${scores} bust=${bust} win=${win}`);
     });
   }
   playerHit() {
-    let {player} = this.state;
-    player.push(nextCard()); // push next card on player[] array
-    this.setState({
-      player,
-    });
-    this.updateScore(1); // update score for player
+    this.dealCards(0, 1); // deal 1 card to player
   }
   // dealer or player stands. who 0=dealer, 1=player
   playerStand(who) {
