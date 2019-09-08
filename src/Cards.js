@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
+import './Cards.css';
 
 const RenderCards = (props) => {
     const { cards, hand, me } = props;
-    return hand.map((card, index) => <img src={cards[card].image} alt={cards[card].code} key={cards[card].code + me + index} /> );
+    return hand.map((card, index) => <img className="card" src={cards[card].image} alt={cards[card].code} key={cards[card].code + me + index} /> );
 }
 
 class Cards extends Component {

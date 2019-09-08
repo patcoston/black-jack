@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './Action.css';
 
 class Actions extends Component {
     constructor(props) {
