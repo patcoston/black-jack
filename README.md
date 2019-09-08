@@ -6,5 +6,8 @@
 
 ## TODO:
 
-- Dealer hit
-- Add tie logic for dual score of 21
+- Make Aces worth 11 initially
+- If bust AND have one or more Aces,
+  convert Aces value from 11 to 1,
+  one at a time until score is 21 or under,
+  or no more Aces to convert.

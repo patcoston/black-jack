@@ -76,14 +76,15 @@ class App extends Component {
     }
     // Calculate new score(s)
     // iterate through dealer and player me 0=dealer me 1=player
-    let first = 0;
-    let last = 1;
-    if (dealerCards === 0) {
-      first = 1;
+    let first = 0; // start with dealer
+    let last = 1; // end with player
+    if (dealerCards === 0) { // if no dealer
+      first = 1; // start with player
     }
-    if (playerCards === 0) {
-      last = 0;
+    if (playerCards === 0) { // if no player
+      last = 0; // end with dealer
     }
+    let aceCount = [0, 0]; // count how many aces dealer and player has
     for (let me = first; me <= last; me++) {
       let score = 0;
       let cardValue = 0;
@@ -95,6 +96,7 @@ class App extends Component {
           if (isNaN(value)) {
               if (value === 'ACE') {
                   cardValue = 11;
+                  aceCount[me]++; // count Ace for dealer or player
               } else {
                   cardValue = 10;
               }
@@ -102,6 +104,14 @@ class App extends Component {
               cardValue = parseInt(value);
           }
           score += cardValue;
+      }
+      // Adjust score if over 21 and have Aces
+      if (score > 21 && aceCount[me] > 0) { // if hand is bust and have one or more Aces
+        // This will convert the Aces from 11 to 1, one at a time until the score is 21 or lower, or there are no more Aces to convert
+        while (aceCount[me] > 0 && score > 21) { // while have Aces worth 11 and score is over 21
+          score -= 10; // convert Ace value 11 to 1
+          aceCount[me]--; // subtract Ace with value 11
+        }
       }
       scores[me] = score; // dealer's or player's score
       // check for bust (dealer or player), dealer ties at 21, or dealer wins
