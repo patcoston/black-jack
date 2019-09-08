@@ -115,18 +115,18 @@ class App extends Component {
       }
       scores[me] = score; // dealer's or player's score
       // check for bust (dealer or player), dealer ties at 21, or dealer wins
-      console.log(`score=${score} scores=${scores} stand=${stand} bust=${bust} win=${win}`);
+      //console.log(`score=${score} scores=${scores} stand=${stand} bust=${bust} win=${win}`);
       if (score > 21) { // if score > 21
-        console.log('Bust!');
+        //console.log('Bust!');
         bust[me] = true; // dealer or player bust
         win[other] = true; // if player bust, then dealer win and vice-versa
       } else if (dealersTurn && me === 0 && scores[0] === 21 && scores[1] === 21) { // if dealer's hit and the dealer and player both have 21, then it's a tie
-        console.log('Dealers Turn: Tie for 21');
+        //console.log('Dealers Turn: Tie for 21');
         stand[0] = true; // dealer stands
         win[0] = true; // both dealer and play win, it's a tie
         win[1] = true;
       } else if (dealersTurn && me === 0 && scores[0] > scores[1]) { // if dealer's hit and dealer has higher score
-        console.log('Dealers Turn: Dealer won!')
+        //console.log('Dealers Turn: Dealer won!')
         stand[0] = true; // dealer stands
         win[0] = true; // dealer wins
       }
@@ -139,7 +139,7 @@ class App extends Component {
       win,
       stand,
     }, () => {
-      console.log(`setState() dealer=${dealer} player=${player} scores=${scores} stand=${stand} bust=${bust} win=${win}`);
+      //console.log(`setState() dealer=${dealer} player=${player} scores=${scores} stand=${stand} bust=${bust} win=${win}`);
     });
     const winner = win[0] || win[1];
     return winner;
