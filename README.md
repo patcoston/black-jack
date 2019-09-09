@@ -22,6 +22,10 @@
 
 - Player Stands - Bug: Dealer Plays, thinks it wins with lower score.
 
+- Bug: Edge Case: Split and one or both hands gets 21, then dealer gets 21, it shows Win, not Tie
+
+- Bug: Disable Split button after Split
+
 ## How the code works
 
 - Get the card data from the API and store in array cards[]

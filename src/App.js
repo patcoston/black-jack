@@ -102,11 +102,7 @@ class App extends Component {
     let aceCount = [0, 0, 0]; // count how many Aces for dealer, player and split
     for (let me = 0; me < 3; me++) {
       if (me === 1) { // if player
-        if (player.length === 2) { // if player has two cards
-          playerCanSplit = true; // player CAN split hand into two hands
-        } else { // player has more than 2 cards (player always has two or more cards)
-          playerCanSplit = false; // player CANNOT split hand into two hands
-        }
+        playerCanSplit = !split.length; // player can split if there is no split hand
       }
       if (
         (me === 0 && dealerCards > 0) || // if dealer-loop and deal to dealer
@@ -195,7 +191,7 @@ class App extends Component {
     }, () => {
       //console.log(`setState() dealer=${dealer} player=${player} scores=${scores} stand=${stand} bust=${bust} win=${win}`);
     });
-    const winner = win[0] || win[1] || win[2]; // check if dealer, player or split hands won
+    const winner = bust[0] || win[0]; // someone wins when dealer busts or wins. A tie is a win.
     return winner;
   }
   playerHit() {
@@ -215,7 +211,7 @@ class App extends Component {
             dealerHit(); // hit dealer hand again (a tie on 21 is a win for both)
           }
         }, // dealer's turn, deal 1 card to dealer
-        200 // dealer hits every second until dealer busts or ties at 21
+        2000 // dealer hits every second until dealer busts or ties at 21
       );
     }
     dealerHit();
