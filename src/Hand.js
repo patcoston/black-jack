@@ -28,7 +28,6 @@ class Hand extends Component {
 
     render() {
         const { cards, hand, score, bust, win, stand, me } = this.state;
-        console.log(`score=${score}`);
         let them = null;
         let name = null;
         let tie = null;

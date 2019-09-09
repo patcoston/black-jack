@@ -75,29 +75,38 @@ class App extends Component {
       stand[1] = true; // player stands
     }
     if (playerSplit) { // if player wants to split
-      split = [];
+      split = []; // reset split hand
       split.push(player[1]); // move second card from player hand to split hand
-      player.pop(); // remove card from player hand that was moved to split hand
+      player.pop(); // remove second card from player hand that was moved to split hand
     }
     // deal dealer cards
-    for (let card = 0; card < dealerCards; card++) {
-      dealer.push(nextCard());
+    if (dealerCards) {
+      for (let card = 0; card < dealerCards; card++) {
+        dealer.push(nextCard());
+      }
     }
     // deal player cards
-    for (let card = 0; card < playerCards; card++) {
-      player.push(nextCard());
+    if (playerCards) {
+      for (let card = 0; card < playerCards; card++) {
+        player.push(nextCard());
+      }
     }
     // deal split cards
-    for (let card = 0; card < splitCards; card++) {
-      split.push(nextCard());
+    if (splitCards) {
+      for (let card = 0; card < splitCards; card++) {
+        split.push(nextCard());
+      }
     }
     // Calculate new scores for dealer, player and split
     // iterate through dealer, player, and split me: 0=dealer 1=player 2=split
     let aceCount = [0, 0, 0]; // count how many Aces for dealer, player and split
     for (let me = 0; me < 3; me++) {
-      // if player has not split, and has only two cards, and they are of same value
-      if (!playerSplit && me === 1 && playerCards === 2 && cards[player[0]].value === cards[player[1]].value) {
-        playerCanSplit = true; // player can split hand into two hands
+      if (me === 1) { // if player
+        if (player.length === 2) { // if player has two cards
+          playerCanSplit = true; // player CAN split hand into two hands
+        } else { // player has more than 2 cards (player always has two or more cards)
+          playerCanSplit = false; // player CANNOT split hand into two hands
+        }
       }
       if (
         (me === 0 && dealerCards > 0) || // if dealer-loop and deal to dealer

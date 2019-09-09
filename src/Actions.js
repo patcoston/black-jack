@@ -27,12 +27,13 @@ class Actions extends Component {
     render() {
         const { playerHit, dealerPlay, resetCards, playerSplit, playerCanSplit, bust, win, stand } = this.state;
         const disabled = bust || win || stand;
+        console.log(`playerCanSplit=${playerCanSplit}`);
         return (
             <div>
                 <button disabled={false} onClick={() => resetCards()}>Deal Cards</button>
                 <button disabled={disabled} onClick={() => dealerPlay()}>Stand</button>
                 <button disabled={disabled} onClick={() => playerHit()}>Hit</button>
-                <button disabled={!playerCanSplit} onClick={() => playerSplit()}>Split</button>
+                <button disabled={disabled || !playerCanSplit} onClick={() => playerSplit()}>Split</button>
             </div>
         );
     }

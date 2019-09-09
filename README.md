@@ -4,11 +4,15 @@
 
 - Dealer will hit until win, bust, or tie at 21
 - Aces are worth 11 initially
+- Jack, Queen and King are worth 10
 - If bust (score > 21) AND have one or more Aces,
   convert Aces value from 11 to 1,
-  one at a time until score is 21 or under,
+  one at a time until score is not over 21,
   or no more Aces to convert.
   This applies to player and dealer.
+- Split is enabled when player has two cards.
+  It splits one hand into two hands,
+  then each hand gets hit once, then dealer plays.
 
 ## TODO:
 
