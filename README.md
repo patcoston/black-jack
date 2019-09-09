@@ -7,7 +7,8 @@
 - Aces are worth 11 initially
 - If bust (score > 21) AND have one or more Aces, it converts Aces value from 11 to 1, one at a time until score is not over 21, or no more Aces to convert. This applies to player and dealer.
 - Split is enabled when player has two cards and has not Split or Hit yet. It splits one hand into two hands, then each hand gets hit once, then dealer plays.
-- If player splits, then dealer will try to beat higher hand
+- If player splits, then dealer will try to beat higher hand.
+- Normally in Black Jack, player can split their hand if the cards have the same value. I originally implemented this constraint, but thought it was more fun to split any hand.
 
 ## TODO:
 
@@ -17,7 +18,7 @@
 ## How the code works
 
 - Get card data from API and store in array cards[]
-- 3 card Arrays for Dealer, Player and Split hand. Normally in Black Jack, player can split their hand if the cards have the same value. I originally implemented this constraint, but thought it was more fun to split any hand.
+- 3 card Arrays for Dealer, Player and Split hand.
 - Arrays for Dealer, Player and Split cards contain indexes into cards[] array. To deal a card into a hand, a random number is chosen from 0 to size of cards[] array minus 1. If the cards array was length 100, random numbers would be 0 to 99.
   This in not realistic for two reasons:
   1. The same card can be picked more than once
