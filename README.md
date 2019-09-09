@@ -17,14 +17,8 @@
 
 ## TODO:
 
-- Splitting - After Split clicked, disable buttons Stand, Hit, Split,
-  then Dealer plays, then show Win, Lose or Tie for 21 for all 3 hands.
-
-- Player Stands - Bug: Dealer Plays, thinks it wins with lower score.
-
 - Bug: Edge Case: Split and one or both hands gets 21, then dealer gets 21, it shows Win, not Tie
-
-- Bug: Disable Split button after Split
+- Bug: If player hand stands, then split hands should also show Stand label
 
 ## How the code works
 

@@ -24,7 +24,6 @@ class App extends Component {
       dealerPlay: this.dealerPlay.bind(this), // click method for player standing
       resetCards: this.resetCards.bind(this), // click method for resetting cards
       playerSplit: this.playerSplit.bind(this), // click method for splitting player cards
-      playerCanSplit: false, // true if player has two cards that have same value, false otherwise
     };
     this.getData();
   }
@@ -51,7 +50,6 @@ class App extends Component {
       player: [],
       dealer: [],
       split: [],
-      playerCanSplit: false,
       bust: [false, false, false],
       win: [false, false, false],
       stand: [false, false, false],
@@ -69,8 +67,6 @@ class App extends Component {
     let bust = [...this.state.bust]; // clone bust[] array so it can be mutated
     let win = [...this.state.win]; // clone win[] array so it can be mutated
     let stand = [...this.state.stand]; // clone stand[] array so it can be mutated
-    let playerCanSplit = this.state.playerCanSplit; // can player split? true/false
-    //console.log(`dealCards(${dealersTurn}, ${dealerCards},${playerCards}) scores=${scores} bust=${bust} win=${win} stand=${stand}`);
     if (dealersTurn) { // if it's the dealer's turn
       stand[1] = true; // player stands
     }
@@ -101,9 +97,6 @@ class App extends Component {
     // iterate through dealer, player, and split me: 0=dealer 1=player 2=split
     let aceCount = [0, 0, 0]; // count how many Aces for dealer, player and split
     for (let me = 0; me < 3; me++) {
-      if (me === 1) { // if player
-        playerCanSplit = !split.length; // player can split if there is no split hand
-      }
       if (
         (me === 0 && dealerCards > 0) || // if dealer-loop and deal to dealer
         (me === 1 && playerCards > 0) || // if player-loop and deal to player
@@ -141,9 +134,7 @@ class App extends Component {
         }
         scores[me] = score; // score for dealer, player or split
         // check for bust (dealer, player, split), dealer ties at 21, or dealer wins
-        //console.log(`score=${score} scores=${scores} stand=${stand} bust=${bust} win=${win}`);
         if (score > 21) { // if score > 21, then dealer or player bust. NOTE: It's impossible for split to bust.
-          //console.log('Bust!');
           if (me === 0) { // if dealer
             bust[0] = true; // dealer busts
             win[1] = true; // player wins
@@ -183,13 +174,10 @@ class App extends Component {
       dealer,
       player,
       split,
-      playerCanSplit,
       scores,
       bust,
       win,
       stand,
-    }, () => {
-      //console.log(`setState() dealer=${dealer} player=${player} scores=${scores} stand=${stand} bust=${bust} win=${win}`);
     });
     const winner = bust[0] || win[0]; // someone wins when dealer busts or wins. A tie is a win.
     return winner;
@@ -199,25 +187,28 @@ class App extends Component {
   }
   playerSplit() {
     this.dealCards(false, true, 0, 1, 1); //split players hand, then deal 1 card for each hand
+    this.dealerPlay(); // then dealer plays
   }
   // Player stands. Dealer plays.
   dealerPlay() {
     let winner = false;
+    let delay = 50;
     const dealerHit = () => {
       setTimeout(
         () => {
           winner = this.dealCards(true, false, 1, 0, 0);
           if (!winner) { // if nobody has one yet
+            delay = 2000;
             dealerHit(); // hit dealer hand again (a tie on 21 is a win for both)
           }
         }, // dealer's turn, deal 1 card to dealer
-        2000 // dealer hits every second until dealer busts or ties at 21
+        delay // dealer hits every second until dealer busts or ties at 21
       );
     }
     dealerHit();
   }
   render() {
-    const { cards, dealer, player, split, playerCanSplit, playerHit, dealerPlay, resetCards, playerSplit, scores, bust, win, stand } = this.state;
+    const { cards, dealer, player, split, playerHit, dealerPlay, resetCards, playerSplit, scores, bust, win, stand } = this.state;
     if (!cards || !dealer.length || !player.length) {
       return (
         <div>Loading ...</div>
@@ -252,11 +243,11 @@ class App extends Component {
             who={2} />
         </div>
         <Actions
+          player={player}
           playerHit={playerHit}
           dealerPlay={dealerPlay}
           resetCards={resetCards}
           playerSplit={playerSplit}
-          playerCanSplit={playerCanSplit}
           bust={bust[1]}
           win={win[1]}
           stand={stand[1]} />
