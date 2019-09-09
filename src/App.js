@@ -199,7 +199,7 @@ class App extends Component {
         () => {
           winner = this.dealCards(true, false, 1, 0, 0);
           if (!winner) { // if nobody has one yet
-            delay = 2000;
+            //delay = 2000;
             dealerHit(); // hit dealer hand again (a tie on 21 is a win for both)
           }
         }, // dealer's turn, deal 1 card to dealer
