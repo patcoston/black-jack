@@ -140,7 +140,7 @@ class App extends Component {
             bust[0] = true; // dealer busts
             win[1] = true; // player wins
             win[2] = true; // split wins
-          } else { // otherweise it's player
+          } else { // otherwise it's player
             bust[me] = true; // player has bust
           }
         }
