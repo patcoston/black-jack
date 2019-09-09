@@ -9,6 +9,7 @@
 - Split is enabled when player has two cards and has not Split or Hit yet. It splits one hand into two hands, then each hand gets hit once, then dealer plays.
 - If player splits, then dealer will try to beat higher hand.
 - Normally in Black Jack, player can split their hand if the cards have the same value. I originally implemented this constraint, but thought it was more fun to split any hand.
+- I had originally disabled the Deal Cards button while game was in play, but decided it was more fun to allow a re-deal at any time.
 
 ## TODO:
 
