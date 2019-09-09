@@ -12,9 +12,8 @@
 
 ## TODO:
 
-- Splitting - if your first two cards are identical,
-  you can split them, and each hand will get one card,
-  then the Dealer plays.
+- Splitting - After Split clicked, disable buttons Stand, Hit, Split,
+  then Dealer plays, then show Win, Lose or Tie for 21 for all 3 hands.
 
 ## How the code works
 
@@ -34,4 +33,3 @@
   then reshuffle once I ran out of cards to deal, if I wanted it more realistic.
 - To start, 1 card is dealt to dealer, and 2 to player.
   The one card to dealer simulates one card turned down.
-  
