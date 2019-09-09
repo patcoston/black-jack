@@ -13,11 +13,14 @@
 - Split is enabled when player has two cards.
   It splits one hand into two hands,
   then each hand gets hit once, then dealer plays.
+- If player splits, then dealer will try to beat higher hand
 
 ## TODO:
 
 - Splitting - After Split clicked, disable buttons Stand, Hit, Split,
   then Dealer plays, then show Win, Lose or Tie for 21 for all 3 hands.
+
+- Player Stands - Bug: Dealer Plays, thinks it wins with lower score.
 
 ## How the code works
 

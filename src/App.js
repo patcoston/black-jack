@@ -146,41 +146,40 @@ class App extends Component {
         scores[me] = score; // score for dealer, player or split
         // check for bust (dealer, player, split), dealer ties at 21, or dealer wins
         //console.log(`score=${score} scores=${scores} stand=${stand} bust=${bust} win=${win}`);
-        if (score > 21) { // if score > 21, then dealer or player bust. split cannot bust.
+        if (score > 21) { // if score > 21, then dealer or player bust. NOTE: It's impossible for split to bust.
           //console.log('Bust!');
           if (me === 0) { // if dealer
             bust[0] = true; // dealer busts
             win[1] = true; // player wins
             win[2] = true; // split wins
           } else { // otherweise it's player
-            bust[me] = true; // player has bust. if split, cannot bust.
+            bust[me] = true; // player has bust
           }
         }
-        if (dealersTurn && me === 0) {
-          if (scores[0] === 21) {
-            if (scores[1] === 21) { // if dealer's hit and the dealer and player both have 21, then it's a tie
-              //console.log('Dealers Turn: Tie for 21');
-              stand[0] = true; // dealer stands
-              win[0] = true; // both dealer and play win, it's a tie
-              win[1] = true;
+        if (dealersTurn && me === 0 && !bust[0]) { // if dealer is playing and not bust
+          if (scores[0] === 21) { // if dealer has 21
+            win[0] = true; // win[] applies to win or tie. It's going to be one or the other.
+            if (split.length) { // if player has two hands
+              win[1] = scores[1] === 21; // if player has 21, then it's a tie between dealer and player
+              win[2] = scores[2] === 21; // if split has 21, then it's a tie between dealer and split
+            } else { // player does not have split hand
+              win[1] = scores[1] === 21; // if player has 21, then it's a tie between dealer and player
             }
-            if (scores[2] === 21) { // if dealer's hit and the dealer and split both have 21, then it's a tie
-              //console.log('Dealers Turn: Tie for 21');
-              stand[0] = true; // dealer stands
-              win[0] = true; // both dealer and split win, it's a tie
-              win[2] = true;
+          } else { // dealer does not have 21
+            if (split.length) { // if player has two hands, then dealer will try to beat higher hand
+              if (scores[1] >= scores[2]) { // if player score greater than or equal to split score
+                win[0] = scores[0] > scores[1]; // true if dealer beats player, false otherwise
+              } else { // split score is greater than player score
+                win[0] = scores[0] > scores[2]; // true if dealer beats split, false otherwise
+              }
+              win[1] = scores[1] > scores[0]; // true if player beats dealer, false otherwise
+              win[2] = scores[2] > scores[0]; // true if split beats dealer, false otherwise
+          } else { // player did not split
+              win[0] = scores[0] > scores[1]; // true if dealer beats player, false otherwise
+              win[1] = scores[1] > scores[0]; // true if player beats dealer, false otherwise
             }
           }
-          if (scores[0] > scores[1]) { // if dealer's hit and dealer has higher score compared to player
-            //console.log('Dealers Turn: Dealer won! (compared to player)')
-            stand[0] = true; // dealer stands
-            win[0] = true; // dealer wins
-          }
-          if (scores[0] > scores[2]) { // if dealer's hit and dealer has higher score compared to split
-            //console.log('Dealers Turn: Dealer won! (compared to split)')
-            stand[0] = true; // dealer stands
-            win[0] = true; // dealer wins
-          }
+          stand[0] = win[0]; // dealer stands if they won
         }
       }
     }
@@ -216,7 +215,7 @@ class App extends Component {
             dealerHit(); // hit dealer hand again (a tie on 21 is a win for both)
           }
         }, // dealer's turn, deal 1 card to dealer
-        2000 // dealer hits every second until dealer busts or ties at 21
+        200 // dealer hits every second until dealer busts or ties at 21
       );
     }
     dealerHit();
