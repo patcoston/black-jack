@@ -6,8 +6,10 @@ class Actions extends Component {
         super(props);
         this.state = {
             playerHit: props.playerHit, // method to add card to play hand
-            playerStand: props.playerStand,
+            dealerPlay: props.dealerPlay,
             resetCards: props.resetCards,
+            playerSplit: props.playerSplit,
+            playerCanSplit: props.playerCanSplit,
             bust: props.bust,
             win: props.win,
             stand: props.stand,
@@ -23,13 +25,14 @@ class Actions extends Component {
     }
 
     render() {
-        const { playerHit, playerStand, resetCards, bust, win, stand } = this.state;
+        const { playerHit, dealerPlay, resetCards, playerSplit, playerCanSplit, bust, win, stand } = this.state;
         const disabled = bust || win || stand;
         return (
             <div>
                 <button disabled={false} onClick={() => resetCards()}>Deal Cards</button>
-                <button disabled={disabled} onClick={() => playerStand()}>Stand</button>
+                <button disabled={disabled} onClick={() => dealerPlay()}>Stand</button>
                 <button disabled={disabled} onClick={() => playerHit()}>Hit</button>
+                <button disabled={!playerCanSplit} onClick={() => playerSplit()}>Split</button>
             </div>
         );
     }

@@ -11,7 +11,7 @@ class Hand extends Component {
             bust: props.bust, // bust? true/false
             win: props.win, // win[] array of true/false, index 0=dealer 1=player
             stand: props.stand, // stand? true/false
-            me: props.who, // me is 0=dealer 1=player
+            me: props.who, // me is 0=dealer 1=player 2=split
         }
     }
 
@@ -27,22 +27,34 @@ class Hand extends Component {
 
     render() {
         const { cards, hand, score, bust, win, stand, me } = this.state;
-        const them = 1 - me;
-        const tie = win[0] && win[1];
-        return (
-            <section>
-                <h2>
-                    <span>{me ? 'Player' : 'Dealer'}</span>
-                    <span> Score: {score}</span>
-                    {stand && <span> Stand</span>}
-                    {bust && <span> Bust!</span>}
-                    {win[me] && !tie && <span> Win!</span>}
-                    {win[them] && !tie && <span> Lose!</span>}
-                    {tie && <span> Tie!</span>}
-                </h2>
-                <Cards cards={cards} hand={hand} me={me} />
-            </section>
-        );
+        let them = null;
+        let name = null;
+        let tie = null;
+        switch(me) {
+            case 0: them = 1; name = 'Dealer'; tie = win[0] & win[1]; break;
+            case 1: them = 0; name = 'Player'; tie = win[0] & win[1]; break;
+            case 2: them = 0; name = 'Split'; tie = win[0] & win[2]; break;
+        }
+        if (hand.length) {
+            return (
+                <section>
+                    <h2>
+                        <span>{name}</span>
+                        <span> Score: {score}</span>
+                        {stand && <span> Stand</span>}
+                        {bust && <span> Bust!</span>}
+                        {win[me] && !tie && <span> Win!</span>}
+                        {win[them] && !tie && <span> Lose!</span>}
+                        {tie && <span> Tie!</span>}
+                    </h2>
+                    <Cards cards={cards} hand={hand} me={me} />
+                </section>
+            );
+        } else {
+            return (
+                <section></section>
+            )            
+        }
     }
 }
 
