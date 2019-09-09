@@ -95,8 +95,8 @@ class App extends Component {
     // iterate through dealer, player, and split me: 0=dealer 1=player 2=split
     let aceCount = [0, 0, 0]; // count how many Aces for dealer, player and split
     for (let me = 0; me < 3; me++) {
-      // if player, and has two cards, and both are same value
-      if (me === 1 && playerCards === 2 && cards[player[0]].value === cards[player[1]].value) {
+      // if player has not split, and has only two cards, and they are of same value
+      if (!playerSplit && me === 1 && playerCards === 2 && cards[player[0]].value === cards[player[1]].value) {
         playerCanSplit = true; // player can split hand into two hands
       }
       if (
@@ -147,27 +147,31 @@ class App extends Component {
             bust[me] = true; // player has bust. if split, cannot bust.
           }
         }
-        if (dealersTurn && me === 0 && scores[0] === 21 && scores[1] === 21) { // if dealer's hit and the dealer and player both have 21, then it's a tie
-          //console.log('Dealers Turn: Tie for 21');
-          stand[0] = true; // dealer stands
-          win[0] = true; // both dealer and play win, it's a tie
-          win[1] = true;
-        }
-        if (dealersTurn && me === 0 && scores[0] === 21 && scores[2] === 21) { // if dealer's hit and the dealer and split both have 21, then it's a tie
-          //console.log('Dealers Turn: Tie for 21');
-          stand[0] = true; // dealer stands
-          win[0] = true; // both dealer and split win, it's a tie
-          win[2] = true;
-        }
-        if (dealersTurn && me === 0 && scores[0] > scores[1]) { // if dealer's hit and dealer has higher score compared to player
-          //console.log('Dealers Turn: Dealer won! (compared to player)')
-          stand[0] = true; // dealer stands
-          win[0] = true; // dealer wins
-        }
-        if (dealersTurn && me === 0 && scores[0] > scores[2]) { // if dealer's hit and dealer has higher score compared to split
-          //console.log('Dealers Turn: Dealer won! (compared to split)')
-          stand[0] = true; // dealer stands
-          win[0] = true; // dealer wins
+        if (dealersTurn && me === 0) {
+          if (scores[0] === 21) {
+            if (scores[1] === 21) { // if dealer's hit and the dealer and player both have 21, then it's a tie
+              //console.log('Dealers Turn: Tie for 21');
+              stand[0] = true; // dealer stands
+              win[0] = true; // both dealer and play win, it's a tie
+              win[1] = true;
+            }
+            if (scores[2] === 21) { // if dealer's hit and the dealer and split both have 21, then it's a tie
+              //console.log('Dealers Turn: Tie for 21');
+              stand[0] = true; // dealer stands
+              win[0] = true; // both dealer and split win, it's a tie
+              win[2] = true;
+            }
+          }
+          if (scores[0] > scores[1]) { // if dealer's hit and dealer has higher score compared to player
+            //console.log('Dealers Turn: Dealer won! (compared to player)')
+            stand[0] = true; // dealer stands
+            win[0] = true; // dealer wins
+          }
+          if (scores[0] > scores[2]) { // if dealer's hit and dealer has higher score compared to split
+            //console.log('Dealers Turn: Dealer won! (compared to split)')
+            stand[0] = true; // dealer stands
+            win[0] = true; // dealer wins
+          }
         }
       }
     }
