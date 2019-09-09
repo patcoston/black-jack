@@ -26,6 +26,10 @@
 
 ![Split and Dealer Busts](https://github.com/patcoston/black-jack/blob/master/public/bj1.png)
 
+## Screen Shot 2
+
 ![Split and Dealer Tie Black Jack](https://github.com/patcoston/black-jack/blob/master/public/bj2.png)
+
+## Screen Shot 3
 
 ![Dealer Wins Black Jack](https://github.com/patcoston/black-jack/blob/master/public/bj3.png)
