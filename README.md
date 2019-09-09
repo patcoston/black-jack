@@ -11,11 +11,6 @@
 - Normally in Black Jack, player can split their hand if the cards have the same value. I originally implemented this constraint, but thought it was more fun to split any hand.
 - I had originally disabled the Deal Cards button while game was in play, but decided it was more fun to allow a re-deal at any time.
 
-## TODO:
-
-- Bug: Edge Case: Split and one or both hands gets 21, then dealer gets 21, it shows Win, not Tie
-- Bug: If player splits, then left hand shows Stand label. Right hand should also show Stand label.
-
 ## How the code works
 
 - Get card data from API and store in array cards[]
