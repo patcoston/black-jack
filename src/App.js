@@ -65,10 +65,10 @@ class App extends Component {
     let player = [...this.state.player]; // clone player[] array so it can be mutated
     let dealer = [...this.state.dealer]; // clone dealer[] array so it can be mutated
     let split = [...this.state.split]; // clone split[] array so it can be mutated
-    const scores = [...this.state.scores]; // clone scores[] array so it can be mutated
-    const bust = [...this.state.bust]; // clone bust[] array so it can be mutated
-    const win = [...this.state.win]; // clone win[] array so it can be mutated
-    const stand = [...this.state.stand]; // clone stand[] array so it can be mutated
+    let scores = [...this.state.scores]; // clone scores[] array so it can be mutated
+    let bust = [...this.state.bust]; // clone bust[] array so it can be mutated
+    let win = [...this.state.win]; // clone win[] array so it can be mutated
+    let stand = [...this.state.stand]; // clone stand[] array so it can be mutated
     let playerCanSplit = this.state.playerCanSplit; // can player split? true/false
     //console.log(`dealCards(${dealersTurn}, ${dealerCards},${playerCards}) scores=${scores} bust=${bust} win=${win} stand=${stand}`);
     if (dealersTurn) { // if it's the dealer's turn
@@ -229,22 +229,24 @@ class App extends Component {
           win={win}
           stand={stand[0]}
           who={0} />
-        <Hand
-          cards={cards}
-          hand={player}
-          score={scores[1]}
-          bust={bust[1]}
-          win={win}
-          stand={stand[1]}
-          who={1} />
-        <Hand
-          cards={cards}
-          hand={split}
-          score={scores[2]}
-          bust={bust[2]}
-          win={win}
-          stand={stand[2]}
-          who={2} />
+        <div className="playerHands">
+          <Hand
+            cards={cards}
+            hand={player}
+            score={scores[1]}
+            bust={bust[1]}
+            win={win}
+            stand={stand[1]}
+            who={1} />
+          <Hand
+            cards={cards}
+            hand={split}
+            score={scores[2]}
+            bust={bust[2]}
+            win={win}
+            stand={stand[2]}
+            who={2} />
+        </div>
         <Actions
           playerHit={playerHit}
           dealerPlay={dealerPlay}

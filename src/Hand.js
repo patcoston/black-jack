@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Cards from './Cards';
+import './Hand.css';
 
 class Hand extends Component {
     constructor(props) {
@@ -27,17 +28,18 @@ class Hand extends Component {
 
     render() {
         const { cards, hand, score, bust, win, stand, me } = this.state;
+        console.log(`score=${score}`);
         let them = null;
         let name = null;
         let tie = null;
         switch(me) {
-            case 0: them = 1; name = 'Dealer'; tie = win[0] & win[1]; break;
-            case 1: them = 0; name = 'Player'; tie = win[0] & win[1]; break;
-            case 2: them = 0; name = 'Split'; tie = win[0] & win[2]; break;
+            case 0: them = 1; name = 'Dealer'; tie = win[0] && win[1]; break;
+            case 1: them = 0; name = 'Player'; tie = win[0] && win[1]; break;
+            case 2: them = 0; name = 'Split'; tie = win[0] && win[2]; break;
         }
         if (hand.length) {
             return (
-                <section>
+                <section className="hand">
                     <h2>
                         <span>{name}</span>
                         <span> Score: {score}</span>
@@ -47,7 +49,9 @@ class Hand extends Component {
                         {win[them] && !tie && <span> Lose!</span>}
                         {tie && <span> Tie!</span>}
                     </h2>
-                    <Cards cards={cards} hand={hand} me={me} />
+                    <div>
+                        <Cards cards={cards} hand={hand} me={me} />
+                    </div>
                 </section>
             );
         } else {
