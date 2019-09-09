@@ -108,6 +108,7 @@ class App extends Component {
           case 0: hand = dealer; break;
           case 1: hand = player; break;
           case 2: hand = split; break;
+          default: console.log(`Value of is ${me} but should be 1, 2 or 3`);
         }
         for (let i = 0; i < hand.length; i++) {
             const card = hand[i];
