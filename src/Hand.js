@@ -32,9 +32,9 @@ class Hand extends Component {
         let name = null;
         let tie = null;
         switch(me) {
-            case 0: them = 1; name = 'Dealer'; tie = win[0] && win[1]; break;
-            case 1: them = 0; name = 'Player'; tie = win[0] && win[1]; break;
-            case 2: them = 0; name = 'Split'; tie = win[0] && win[2]; break;
+            case 0: them = 1; name = 'Dealer'; tie = (win[0] && win[1]) || (win[0] && win[2]); break; // tie if dealer/player or dealer/split won
+            case 1: them = 0; name = 'Player'; tie = win[0] && win[1]; break; // tie if dealer/player won
+            case 2: them = 0; name = 'Split'; tie = win[0] && win[2]; break; // tie if dealer/split won
             default: console.log(`Value of me is ${me} but should be 0, 1 or 2`);
         }
         if (hand.length) {

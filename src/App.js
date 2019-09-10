@@ -142,15 +142,11 @@ class App extends Component {
             win[0] = true; // dealer wins
           }
         }
-        if (dealersTurn && me === 0 && !bust[0]) { // if dealer is playing and not bust
+        if (dealersTurn && me === 0 && !bust[0]) { // if it's dealer's turn and not bust
           if (scores[0] === 21) { // if dealer has 21
             win[0] = true; // win[] applies to win or tie. It's going to be one or the other.
-            if (split.length) { // if player has two hands
-              win[1] = scores[1] === 21; // if player has 21, then it's a tie between dealer and player
-              win[2] = scores[2] === 21; // if split has 21, then it's a tie between dealer and split
-            } else { // player does not have split hand
-              win[1] = scores[1] === 21; // if player has 21, then it's a tie between dealer and player
-            }
+            win[1] = scores[1] === 21; // if player has 21, then it's a tie between dealer and player
+            win[2] = scores[2] === 21 && split.length; // if split hand and split has 21, then it's a tie between dealer and split
           } else { // dealer does not have 21
             if (split.length) { // if player has two hands, then dealer will try to beat higher hand
               if (scores[1] >= scores[2]) { // if player score greater than or equal to split score
