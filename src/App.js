@@ -132,12 +132,14 @@ class App extends Component {
         scores[me] = score; // update score for dealer, player or split
         // check for bust (dealer, player, split), dealer ties at 21, or dealer wins
         if (score > 21) { // if score > 21, then dealer or player bust. NOTE: It's impossible for split to bust.
-          if (me === 0) { // if dealer
-            bust[0] = true; // dealer busts
+          bust[me] = true; // dealer, player, or split has bust
+          if (me === 0) { // if dealer bust
             win[1] = true; // player wins
-            win[2] = true; // split wins
-          } else { // otherwise it's player
-            bust[me] = true; // player has bust
+            if (split.length) { // if player has split
+              win[2] = true; // split wins
+            }
+          } else { // player or split has bust. Note: if player split into two hands, both will always win, lose or tie at the same time
+            win[0] = true; // dealer wins
           }
         }
         if (dealersTurn && me === 0 && !bust[0]) { // if dealer is playing and not bust
