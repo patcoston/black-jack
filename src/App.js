@@ -69,6 +69,7 @@ class App extends Component {
     let stand = [...this.state.stand]; // clone stand[] array so it can be mutated
     if (dealersTurn) { // if it's the dealer's turn
       stand[1] = true; // player stands
+      stand[2] = true; // split stands
     }
     if (playerSplit) { // if player wants to split
       split = []; // reset split hand
