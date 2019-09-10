@@ -93,9 +93,8 @@ class App extends Component {
       }
     }
     // Calculate new scores for dealer, player and split
-    // iterate through dealer, player, and split me: 0=dealer 1=player 2=split
     let aceCount = [0, 0, 0]; // count how many Aces for dealer, player and split
-    for (let me = 0; me < 3; me++) {
+    for (let me = 0; me < 3; me++) { // iterate through dealer, player, and split me: 0=dealer 1=player 2=split
       if (
         (me === 0 && dealerCards) || // if dealer-loop and deal to dealer
         (me === 1 && playerCards) || // if player-loop and deal to player
@@ -107,7 +106,7 @@ class App extends Component {
           case 0: hand = dealer; break;
           case 1: hand = player; break;
           case 2: hand = split; break;
-          default: console.log(`Value of me is ${me} but should be 1, 2 or 3`);
+          default: console.log(`Value of me is ${me} but should be 0, 1 or 2`);
         }
         for (let i = 0; i < hand.length; i++) {
             const card = hand[i];
@@ -130,7 +129,7 @@ class App extends Component {
           score -= 10; // convert Ace value 11 to 1 by subtracting 10
           aceCount[me]--; // subtract Ace
         }
-        scores[me] = score; // score for dealer, player or split
+        scores[me] = score; // update score for dealer, player or split
         // check for bust (dealer, player, split), dealer ties at 21, or dealer wins
         if (score > 21) { // if score > 21, then dealer or player bust. NOTE: It's impossible for split to bust.
           if (me === 0) { // if dealer
