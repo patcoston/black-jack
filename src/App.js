@@ -97,9 +97,9 @@ class App extends Component {
     let aceCount = [0, 0, 0]; // count how many Aces for dealer, player and split
     for (let me = 0; me < 3; me++) {
       if (
-        (me === 0 && dealerCards > 0) || // if dealer-loop and deal to dealer
-        (me === 1 && playerCards > 0) || // if player-loop and deal to player
-        (me === 2 && splitCards > 0)) {  // if split-loop and deal to split
+        (me === 0 && dealerCards) || // if dealer-loop and deal to dealer
+        (me === 1 && playerCards) || // if player-loop and deal to player
+        (me === 2 && splitCards)) {  // if split-loop and deal to split
         let score = 0;
         let cardValue = 0;
         let hand = null;
