@@ -44,6 +44,7 @@ You may need to Git and/or Node to your path
   This in not realistic for two reasons:
   1. The same card can be picked more than once
   2. The cards are not disposed once the hand is done. It's a full deck each time.
+  3. Worst case scenario is getting 22 Aces in a row, to Bust, each worth 1
   Since there are 6 decks, you could get multiple cards with the same suit and value, even if you used each card once. I could mark a card as dirty, so it's not used twice, then reshuffle once I ran out of cards to deal, if I wanted it to be more realistic.
 - To start, one card is dealt to dealer, and 2 to player. The one card to dealer simulates one card turned down.
 
