@@ -11,6 +11,31 @@
 - Normally in Black Jack, player can split their hand if the cards have the same value. I originally implemented this constraint, but thought it was more fun to split any hand.
 - I had originally disabled the Deal Cards button while game was in play, but decided it was more fun to allow a re-deal at any time.
 
+## How to install
+
+You need to be familiar with the command line to install and run.
+Install Node from https://nodejs.org/en/download/
+Install Git from https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+Open the command line
+Navigate to the folder you want to create the sub-folder black-jack
+Type or copy/paste this command into the command into the command line.
+```
+git clone https://github.com/patcoston/black-jack.git
+```
+Change into the black-folder folder
+```
+cd black-jack
+```
+Install the Node Modules
+```
+npm install
+```
+Run Black Jack
+```
+npm start
+```
+You may need to Git and/or Node to your path
+
 ## How the code works
 
 - Get card data from API and store in array cards[]
