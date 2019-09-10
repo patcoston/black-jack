@@ -35,7 +35,7 @@ class Hand extends Component {
             case 0: them = 1; name = 'Dealer'; tie = win[0] && win[1]; break;
             case 1: them = 0; name = 'Player'; tie = win[0] && win[1]; break;
             case 2: them = 0; name = 'Split'; tie = win[0] && win[2]; break;
-            default: console.log(`Value of is ${me} but should be 1, 2 or 3`);
+            default: console.log(`Value of me is ${me} but should be 1, 2 or 3`);
         }
         if (hand.length) {
             return (
