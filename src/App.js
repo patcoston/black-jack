@@ -11,6 +11,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      playerScore: 0,
+      dealerScore: 0,
       deckID: null, // the API deckID which is used to shuffle and obtain decks of cards
       cards: null, // array of cards
       dealer: [], // array of indexes into cards[] array for dealers cards
@@ -59,6 +61,7 @@ class App extends Component {
   // dealersTurn is true if it's the dealers turn, false otherwise
   // if player splits, then playerSplit is true, false otherwise
   dealCards(dealersTurn, playerSplit, dealerCards, playerCards, splitCards) {
+    let { dealerScore, playerScore } = this.state;
     const { cards } = this.state;
     let player = [...this.state.player]; // clone player[] array so it can be mutated
     let dealer = [...this.state.dealer]; // clone dealer[] array so it can be mutated
@@ -165,7 +168,30 @@ class App extends Component {
         }
       }
     }
+    const winner = bust[0] || win[0]; // return winner true/false for dealerPlay(). If dealer bust, then player wins. Tie logic in Hand.js.
+    if (winner) {
+      if (win[0]) { // if dealer hand won or tied
+        dealerScore++; // add one to dealer score
+        if (scores[0] === 21) { // if dealer hand win by 21
+          dealerScore++; // add one to dealer score
+        }
+      }
+      if (win[1]) { // if player hand won or tied
+        playerScore++; // add one to player score
+        if (scores[1] === 21) { // if player hand win by 21
+          playerScore++; // add one to player score
+        }
+      }
+      if (win[2]) { // if split hand won
+        playerScore++; // add one for player
+        if (scores[0] === 21) { // if split hand win by 21
+          playerScore++; // add one to player score
+        }
+      }
+    }
     this.setState({
+      dealerScore,
+      playerScore,
       dealer,
       player,
       split,
@@ -174,7 +200,6 @@ class App extends Component {
       win,
       stand,
     });
-    const winner = bust[0] || win[0]; // return winner true/false for dealerPlay(). If dealer bust, then player wins. Tie logic in Hand.js.
     return winner;
   }
   playerHit() {
@@ -203,7 +228,7 @@ class App extends Component {
     dealerHit();
   }
   render() {
-    const { cards, dealer, player, split, playerHit, dealerPlay, resetCards, playerSplit, scores, bust, win, stand } = this.state;
+    const { cards, dealerScore, playerScore, dealer, player, split, playerHit, dealerPlay, resetCards, playerSplit, scores, bust, win, stand } = this.state;
     if (!cards || !dealer.length || !player.length) {
       return (
         <div>Loading ...</div>
@@ -211,6 +236,11 @@ class App extends Component {
     }
     return (
       <div className="App">
+        <div className="score">
+          <strong>Game Score:</strong>
+          <span className="dealerScore">Dealer: {dealerScore}</span>
+          <span className="playerScore">Player: {playerScore}</span>
+        </div>
         <Hand
           cards={cards}
           hand={dealer}

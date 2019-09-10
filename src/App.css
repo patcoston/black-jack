@@ -7,3 +7,7 @@
   flex-direction: row;
   justify-content: center;
 }
+
+.score { margin: 10px 0 0 0 }
+.score .dealerScore { padding: 0 10px }
+.score .playerScore { padding: 0 10px }
