@@ -115,12 +115,12 @@ class App extends Component {
             if (isNaN(value)) {
                 if (value === 'ACE') {
                     cardValue = 11;
-                    aceCount[me]++; // count Ace for dealer or player
+                    aceCount[me]++; // count Ace for dealer, player or split hands
                 } else {
-                    cardValue = 10;
+                    cardValue = 10; // 10, JACK, QUEEN, KING
                 }
             } else {
-                cardValue = parseInt(value);
+                cardValue = parseInt(value); // 2, 3, 4, 5, 6, 7, 8, 9
             }
             score += cardValue;
         }
