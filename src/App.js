@@ -72,9 +72,7 @@ class App extends Component {
       stand[2] = true; // split stands
     }
     if (playerSplit) { // if player wants to split
-      split = []; // reset split hand
-      split.push(player[1]); // move second card from player hand to split hand
-      player.pop(); // remove second card from player hand that was moved to split hand
+      split.push(player.pop()); // move second card from player hand to split hand
     }
     // deal dealer cards
     if (dealerCards) {
