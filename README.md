@@ -50,12 +50,16 @@ You may need to Git and/or Node to your path
 
 ## Screen Shot 1
 
-![Split and Dealer Busts](https://github.com/patcoston/black-jack/blob/master/public/bj1.png)
+![Starting screen](https://github.com/patcoston/black-jack/blob/master/public/bj1.png)
 
 ## Screen Shot 2
 
-![Split and Dealer Tie Black Jack](https://github.com/patcoston/black-jack/blob/master/public/bj2.png)
+![Player Wins](https://github.com/patcoston/black-jack/blob/master/public/bj2.png)
 
 ## Screen Shot 3
 
-![Dealer Wins Black Jack](https://github.com/patcoston/black-jack/blob/master/public/bj3.png)
+![Player Wins Split](https://github.com/patcoston/black-jack/blob/master/public/bj3.png)
+
+## Screen Shot 4
+
+![Player Wins by Black Jack](https://github.com/patcoston/black-jack/blob/master/public/bj3.png)
