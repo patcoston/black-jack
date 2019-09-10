@@ -174,7 +174,7 @@ class App extends Component {
       win,
       stand,
     });
-    const winner = bust[0] || win[0]; // someone wins when dealer busts or wins. A tie is a win.
+    const winner = bust[0] || win[0]; // return winner true/false for dealerPlay(). If dealer bust, then player wins. Tie logic in Hand.js.
     return winner;
   }
   playerHit() {
