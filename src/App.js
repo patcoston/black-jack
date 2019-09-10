@@ -125,12 +125,10 @@ class App extends Component {
             score += cardValue;
         }
         // Adjust score if over 21 and have Aces
-        if (score > 21 && aceCount[me] > 0) { // if hand is bust and have one or more Aces
-          // This will convert the Aces from 11 to 1, one at a time until the score is 21 or lower, or there are no more Aces to convert
-          while (aceCount[me] > 0 && score > 21) { // while have Aces worth 11 and score is over 21
-            score -= 10; // convert Ace value 11 to 1
-            aceCount[me]--; // subtract Ace with value 11
-          }
+        // This will convert the Aces from 11 to 1, one at a time until the score is 21 or lower, or there are no more Aces to convert
+        while (score > 21 && aceCount[me]) { // while have Aces worth 11 and score is over 21
+          score -= 10; // convert Ace value 11 to 1 by subtracting 10
+          aceCount[me]--; // subtract Ace
         }
         scores[me] = score; // score for dealer, player or split
         // check for bust (dealer, player, split), dealer ties at 21, or dealer wins
