@@ -13,12 +13,12 @@
 
 ## How to install
 
-You need to be familiar with the command line to install and run.
-Install Node from https://nodejs.org/en/download/
-Install Git from https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
-Open the command line
-Navigate to the folder you want to create the sub-folder black-jack
-Type or copy/paste this command into the command into the command line.
+- You need to be familiar with the command line to install and run.
+- Install Node from https://nodejs.org/en/download/
+- Install Git from https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+- Open the command line
+- Navigate to the folder you want to create the sub-folder black-jack
+- Type or copy/paste this command into the command into the command line.
 ```
 git clone https://github.com/patcoston/black-jack.git
 ```
