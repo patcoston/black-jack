@@ -138,7 +138,7 @@ class App extends Component {
             if (split.length) { // if player has split
               win[2] = true; // split wins
             }
-          } else { // player or split has bust. Note: if player split into two hands, both will always win, lose or tie at the same time
+          } else { // player or split has bust
             win[0] = true; // dealer wins
           }
         }
