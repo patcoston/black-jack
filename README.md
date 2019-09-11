@@ -11,6 +11,14 @@
 - Normally in Black Jack, player can split their hand if the cards have the same value. I originally implemented this constraint, but thought it was more fun to split any hand.
 - I had originally disabled the Deal Cards button while game was in play, but decided it was more fun to allow a re-deal at any time.
 
+## Scoring
+
+- 1 point for winning or tie a hand with dealer
+- 2 points if winning a black-jack hand (21) or tie with dealer
+- If you split, you score for each hand
+- No points lost for losing
+- No maximum score to win. Game is open-ended. You decide when you've "won" or "lost".
+
 ## How to install
 
 - You need to be familiar with the command line to install and run.
