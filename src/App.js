@@ -13,7 +13,6 @@ class App extends Component {
     this.state = {
       playerScore: 0,
       dealerScore: 0,
-      deckID: null, // the API deckID which is used to shuffle and obtain decks of cards
       cards: null, // array of cards
       dealer: [], // array of indexes into cards[] array for dealers cards
       player: [], // array of indexes into cards[] array for players cards
@@ -27,24 +26,24 @@ class App extends Component {
       resetCards: this.resetCards.bind(this), // click method for resetting cards
       playerSplit: this.playerSplit.bind(this), // click method for splitting player cards
     };
-    this.getData();
+    this.init();
   }
-  getData() {
-    fetch(`https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=${decks}`)
-    .then(data => data.json())
-    .then(json => {
-      this.setState({ deckID: json.deck_id }, () => {
-        const { deckID } = this.state;
-        const url = `https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=${totalCards}`;
-        fetch(url)
-        .then(data => data.json())
-        .then(json => this.setState({ cards: json.cards }, () => {
-          this.dealCards(false, false, 1, 2, 0); // player's turn, deal one card to dealer and two cards to player
-        }))
-        .catch(err => console.log(`Deck API Fetch Error: ${err}`));
-      });
-    })
-    .catch(err => console.log(`Shuffle API Fetch Error: ${err}`));
+  async init() {
+    await this.getData();
+    await this.dealCards(false, false, 1, 2, 0); // player's turn, deal one card to dealer and two cards to player
+  }
+  async getData() {
+    try {
+      let url = `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=${decks}`;
+      let response = await fetch(url);
+      let json = await response.json();
+      url = `https://deckofcardsapi.com/api/deck/${json.deck_id}/draw/?count=${totalCards}`;
+      response = await fetch(url);
+      json = await response.json();
+      await this.setState({cards: json.cards });
+    } catch(err) {
+      console.log(err);
+    }
   }
   resetCards() {
     this.setState({
