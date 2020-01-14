@@ -31,5 +31,6 @@
   "devDependencies": {
     "react-redux": "^7.1.1",
     "redux": "^4.0.4"
-  }
+  },
+  "homepage": "http://www.patcoston.com/black-jack"
 }
